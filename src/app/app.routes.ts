@@ -8,9 +8,7 @@ export const routes: Routes = [
   {
     path: RoutesPaths.MAIN_DASHBOARD,
     loadComponent: () =>
-      import(
-        './features/containers/main-dashboard/main-dashboard.component'
-      ).then((c) => c.MainDashboardComponent),
+      import('./features/containers/main-dashboard/main-dashboard.component').then((c) => c.MainDashboardComponent),
   },
   {
     path: '**',
