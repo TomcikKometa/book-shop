@@ -1,4 +1,5 @@
 @import 'bootstrap/scss/bootstrap';
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 body,
 html {
@@ -23,3 +24,5 @@ html {
     --tableFour-color-edf1f7: #edf1f7;
     --tableTitle-color-7699bb: #7699bb;
   }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
