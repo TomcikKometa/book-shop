@@ -1,0 +1,15 @@
+.page-number {
+  font-family: 'Open Sans';
+  font-size: 0.875rem;
+  background-color: transparent;
+  color: var(--unnamed-color-222222);
+  width: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.isActive {
+    background-color: var(--unnamed-color-274daa);
+    color: var(--unnamed-color-ffffff);
+    border-radius: 100%;
+}

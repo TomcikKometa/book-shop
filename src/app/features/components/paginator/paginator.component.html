@@ -1,0 +1,12 @@
+<div class="d-flex row align-items-center p-3">
+  <section class="col-6 page-numbers align-items-center">
+    <mat-icon class="arrow" (click)="moveBackwardPage()">chevron_left</mat-icon>
+    <planet-paginator-page-number
+      *ngFor="let page of pages"
+      [isActive]="page === currentPage"
+      [pageNumber]="page"
+      (click)="changePage(page)"
+    ></planet-paginator-page-number>
+    <mat-icon class="arrow" (click)="moveForwardPage()">chevron_right</mat-icon>
+  </section>
+</div>
