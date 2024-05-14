@@ -56,9 +56,7 @@
           type="search"
           placeholder="Szukaj po tytule"
           aria-label="Search"
-          [(ngModel)]="title"
-          [ngModelOptions]="{ standalone: true }"
-          (ngModelChange)="valueChange($event)"
+          [formControl]="searchControl"
         />
       </form>
       <form class="d-flex col-2" role="search">
@@ -67,9 +65,6 @@
           type="search"
           placeholder="Szukaj po autorze"
           aria-label="Search"
-          [(ngModel)]="author"
-          [ngModelOptions]="{ standalone: true }"
-          (ngModelChange)="valueChange($event)"
         />
       </form>
       <button class="btn btn-outline-success" type="submit">
