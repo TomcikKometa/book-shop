@@ -1,26 +1,3 @@
-.numer-of-items-label {
-    text-align: center;
+.container{
+    width:50%;
 }
-
-.page-numbers {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 10px
-}
-
-.arrow{
-    cursor: pointer;
-    color: var(--unnamed-color-274daa);
-}
-
-.material-form{
-    width: 40px !important;
-    margin-top: 5px;
-    margin-left: 5px;
-  }
-
-  ::ng-deep .mat-form-field-wrapper{
-    background-color: var(--unnamed-color-ffffff);
-    align-items: center;
-  }

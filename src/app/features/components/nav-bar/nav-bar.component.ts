@@ -1,7 +1,7 @@
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
-import { MainDashboardService } from '../../../api/services/main-dashboard.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { MainDashboardService,SearchType } from '../../../api/services/main-dashboard.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -12,17 +12,23 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './nav-bar.component.scss',
 })
 export class NavBarComponent implements OnInit {
-  protected searchControl: FormControl = new FormControl<string>('');
+  protected searchControlTitle: FormControl = new FormControl<string>('');
+  protected searchControlAuthor: FormControl = new FormControl<string>('');
 
   private readonly mainDashboardService: MainDashboardService =
     inject(MainDashboardService);
   private readonly distroyReference: DestroyRef = inject(DestroyRef);
 
   public ngOnInit(): void {
-    this.searchControl.valueChanges
+    this.searchControlTitle.valueChanges
       .pipe(takeUntilDestroyed(this.distroyReference),debounceTime(500),distinctUntilChanged())
       .subscribe((value: string) =>
-        this.mainDashboardService.searchBooks(value),
+        this.mainDashboardService.searchBooks(value,SearchType.SEARCH_TITLE),
+      );
+      this.searchControlAuthor.valueChanges
+      .pipe(takeUntilDestroyed(this.distroyReference),debounceTime(500),distinctUntilChanged())
+      .subscribe((value: string) =>
+        this.mainDashboardService.searchBooks(value,SearchType.SEARCH_AUTHOR),
       );
   }
 }

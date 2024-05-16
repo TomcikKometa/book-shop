@@ -1,8 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import { PaginatorPageNumberComponent } from './paginator-page-number/paginator-page-number.component';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { Observable, Subject } from 'rxjs';
+import { MainDashboardService } from '../../../api/services/main-dashboard.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface PaginationOptions {
   currentPage?: number;
@@ -17,24 +28,35 @@ interface PaginatorSelectOptions {
 @Component({
   selector: 'planet-paginator',
   standalone: true,
-  imports: [MatIconModule,PaginatorPageNumberComponent,MatFormFieldModule,CommonModule],
+  imports: [
+    PaginatorPageNumberComponent,
+    MatFormFieldModule,
+    CommonModule,
+    MatIconModule
+  ],
   templateUrl: './paginator.component.html',
-  styleUrls: ['./paginator.component.scss']
+  styleUrls: ['./paginator.component.scss'],
 })
 export class PaginatorComponent implements OnInit {
   public selectedNumberOfItems: number = 10;
-  public pages: number[] = []; 
-  @Input() public numberOfPages: number = 0;
+  public pages: number[] = [];
+  public numberOfPages$: Observable<number> = inject(MainDashboardService).numberOfPages;
+  public numberOfPages:number = 0
   @Input() public currentPage: number = 1;
-  @Output() public readonly paginationChange: EventEmitter<PaginationOptions> = new EventEmitter<PaginationOptions>();
+  public changedPage$: Subject<number> = new Subject<number>();
 
   public readonly paginatorSelectOptions: PaginatorSelectOptions[] = [
     { label: '10', value: 10 },
     { label: '15', value: 15 },
-    { label: '20', value: 20 }
+    { label: '20', value: 20 },
   ];
 
+  private readonly distroyReference: DestroyRef = inject(DestroyRef);
+  private readonly mainDashboardService: MainDashboardService = inject(MainDashboardService);
+
   public ngOnInit(): void {
+    this.numberOfPages$.pipe(takeUntilDestroyed(this.distroyReference))
+      .subscribe((value:number) => this.numberOfPages = value)
     this.pages = Array(this.numberOfPages)
       .fill(0)
       .map((x: unknown, i: number) => i + 1);
@@ -45,21 +67,21 @@ export class PaginatorComponent implements OnInit {
     this.handlePaginationChange();
   }
 
-  public moveBackwardPage(): void{
-    if(this.currentPage > 1){
+  public moveBackwardPage(): void {
+    if (this.currentPage > 1) {
       this.currentPage = this.currentPage - 1;
       this.handlePaginationChange();
     }
   }
 
-  public moveForwardPage(): void{
-    if(this.numberOfPages > this.currentPage){
+  public moveForwardPage(): void {
+    if (this.numberOfPages > this.currentPage) {
       this.currentPage = this.currentPage + 1;
       this.handlePaginationChange();
     }
   }
 
   public handlePaginationChange(): void {
-    this.paginationChange.next({ currentPage: this.currentPage, numberOfItems: this.selectedNumberOfItems });
+    this.mainDashboardService.changedPage(this.currentPage)
   }
 }
