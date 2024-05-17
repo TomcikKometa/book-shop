@@ -1,3 +1,8 @@
-<div class="page-number" [ngClass]="{ isActive: isActive}">
-    {{ pageNumber }}
+<div class="page-number" [ngClass]="{ isActive: isActive }">
+  @if (pageNumber < 10) {
+    <div class="page-number beforeTen">{{ pageNumber }}</div>
+  }
+  @if (pageNumber > 9) {
+    <div class="page-number afterTen">{{ pageNumber }}</div>
+  }
 </div>
