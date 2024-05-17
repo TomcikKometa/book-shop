@@ -1,17 +1,19 @@
-<section class="container d-flex justify-content-center pt-2 pb-2">
-  <div class="d-flex flex-row">
-    <mat-icon
-      class="arrow"
-      (click)="moveBackwardPage()"
-      fontIcon="chevron_left"
-    ></mat-icon>
-    <planet-paginator-page-number
-    class="align-content-center"
-        *ngFor="let page of pages"
-        [isActive]="page === currentPage"
-        [pageNumber]="page"
-        (click)="changePage(page)"
-      ></planet-paginator-page-number>
-    <mat-icon (click)="moveForwardPage()" fontIcon="chevron_right"></mat-icon>
-  </div>
+<section class="d-flex justify-content-center pb-2">
+        <mat-icon
+          class="arrow"
+          (click)="moveBackwardPage()"
+          fontIcon="chevron_left"
+        ></mat-icon>
+        <planet-paginator-page-number
+          class="align-content-center"
+          *ngFor="let page of pages; let index"
+          [isActive]="page === currentPage"
+          [pageNumber]="page"
+          [index]="index"
+          (click)="changePage(page)"
+        ></planet-paginator-page-number>
+        <mat-icon
+          (click)="moveForwardPage()"
+          fontIcon="chevron_right"
+        ></mat-icon>
 </section>

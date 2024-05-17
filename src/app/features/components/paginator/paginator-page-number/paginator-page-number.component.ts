@@ -11,4 +11,5 @@ import { Component, Input } from '@angular/core';
 export class PaginatorPageNumberComponent {
   @Input() public pageNumber: number = 1;
   @Input() public isActive: boolean = false;
+  @Input() public index: number = 0;
 }
