@@ -5,18 +5,15 @@ import { ApiBookModel } from './models/api-response-model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export enum SearchType {
   SEARCH_TITLE = 'title',
-  SEARCH_AUTHOR = 'author',
+  SEARCH_AUTHOR = 'author'
 }
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MainDashboardService {
   protected allBooks: ApiBookModel[] = [];
-  private booksPerPage$: BehaviorSubject<ApiBookModel[]> = new BehaviorSubject<
-    ApiBookModel[]
-  >([]);
-  public booksPerPage: Observable<ApiBookModel[]> =
-    this.booksPerPage$.asObservable();
+  private booksPerPage$: BehaviorSubject<ApiBookModel[]> = new BehaviorSubject<ApiBookModel[]>([]);
+  public booksPerPage: Observable<ApiBookModel[]> = this.booksPerPage$.asObservable();
   private numberOfPages$: Subject<number> = new Subject<number>();
   public numberOfPages: Observable<number> = this.numberOfPages$.asObservable();
 
@@ -41,14 +38,12 @@ export class MainDashboardService {
       .pipe(takeUntilDestroyed(this.distroyReference))
       .subscribe((data: ApiBookModel[]) => {
         const responseBooksPerPage: ApiBookModel[] = [];
-        if((data.length - this.endPartBooksItems) < 0 ){
-          const diffrenceLength:number = Math.abs(data.length - this.endPartBooksItems);
+        if (data.length - this.endPartBooksItems < 0) {
+          const diffrenceLength: number = Math.abs(data.length - this.endPartBooksItems);
           this.endPartBooksItems = this.endPartBooksItems - diffrenceLength;
         }
-        for(this.startPartBooksItems;this.startPartBooksItems < this.endPartBooksItems;this.startPartBooksItems++) {
-          responseBooksPerPage.push(
-            this.mapDataBookResponse(data[this.startPartBooksItems]),
-          );
+        for (this.startPartBooksItems; this.startPartBooksItems < this.endPartBooksItems; this.startPartBooksItems++) {
+          responseBooksPerPage.push(this.mapDataBookResponse(data[this.startPartBooksItems]));
         }
         this.booksPerPage$.next(responseBooksPerPage);
         this.allBooks = data;
@@ -72,7 +67,7 @@ export class MainDashboardService {
       simple_thumb: bookItem?.simple_thumb,
       slug: bookItem?.slug,
       title: this.mapBookItemTitle(bookItem?.title),
-      url: bookItem?.url,
+      url: bookItem?.url
     };
   }
 
@@ -91,14 +86,8 @@ export class MainDashboardService {
 
   searchBooks(search: string, type: SearchType) {
     search = search.charAt(0).toUpperCase() + search.slice(1);
-    this.searchTitle =
-      type === SearchType.SEARCH_TITLE
-        ? (this.searchTitle = search)
-        : this.searchTitle;
-    this.searchAuthor =
-      type === SearchType.SEARCH_AUTHOR
-        ? (this.searchAuthor = search)
-        : this.searchAuthor;
+    this.searchTitle = type === SearchType.SEARCH_TITLE ? (this.searchTitle = search) : this.searchTitle;
+    this.searchAuthor = type === SearchType.SEARCH_AUTHOR ? (this.searchAuthor = search) : this.searchAuthor;
 
     if (this.searchAuthor.length > 1 && !this.searchTitle) {
       this.filteredBySearch = this.allBooks.filter((value: ApiBookModel) => {
@@ -112,45 +101,39 @@ export class MainDashboardService {
       this.handleFilterEmitter();
     } else if (this.searchAuthor.length > 1 && this.searchTitle.length > 1) {
       if (this.searchAuthor.length > 1) {
-        this.filteredBySearch = this.filteredBySearch.filter(
-          (value: ApiBookModel) => {
-            return value.author.includes(search);
-          },
-        );
+        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
+          return value.author.includes(search);
+        });
       } else if (this.searchTitle.length > 1) {
-        this.filteredBySearch = this.filteredBySearch.filter(
-          (value: ApiBookModel) => {
-            return value.title.includes(search);
-          },
-        );
+        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
+          return value.title.includes(search);
+        });
       }
       this.handleFilterEmitter();
     } else {
       this.startPartBooksItems = 0;
-      this.endPartBooksItems= 25;
+      this.endPartBooksItems = 25;
       this.getBooks();
     }
   }
 
   handleFilterEmitter(): void {
     const mappedFilteredBySearch: ApiBookModel[] = [];
-    this.filteredBySearch.forEach((item: ApiBookModel) =>
-      mappedFilteredBySearch.push(this.mapDataBookResponse(item)),
-    );
+    this.filteredBySearch.forEach((item: ApiBookModel) => mappedFilteredBySearch.push(this.mapDataBookResponse(item)));
     this.booksPerPage$.next(mappedFilteredBySearch);
   }
 
-  changedPage(currentPage:number) {
+  changedPage(currentPage: number) {
     currentPage = currentPage - 1;
-    this.startPartBooksItems = currentPage * 25
+    this.startPartBooksItems = currentPage * 25;
     this.endPartBooksItems = this.startPartBooksItems + 25;
-    
+
     this.getBooks();
   }
 
-  handleGeneratePageNumber(dataLength:number){
-    let numberOfPages : number = 0;
-    numberOfPages = Math.ceil(dataLength/25);
+  handleGeneratePageNumber(dataLength: number) {
+    let numberOfPages: number = 0;
+    numberOfPages = Math.ceil(dataLength / 25);
     this.numberOfPages$.next(numberOfPages);
   }
 }
