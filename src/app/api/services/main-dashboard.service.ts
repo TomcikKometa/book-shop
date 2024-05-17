@@ -11,19 +11,16 @@ export enum SearchType {
   providedIn: 'root'
 })
 export class MainDashboardService {
-  protected allBooks: ApiBookModel[] = [];
+  private startPartBooksItems = 0;
+  private endPartBooksItems = 25;
+  private searchTitle: string = '';
+  private searchAuthor: string = '';
+  private filteredBySearch: ApiBookModel[] = [];
+  private allBooks: ApiBookModel[] = [];
   private booksPerPage$: BehaviorSubject<ApiBookModel[]> = new BehaviorSubject<ApiBookModel[]>([]);
-  public booksPerPage: Observable<ApiBookModel[]> = this.booksPerPage$.asObservable();
   private numberOfPages$: Subject<number> = new Subject<number>();
+  public booksPerPage: Observable<ApiBookModel[]> = this.booksPerPage$.asObservable();
   public numberOfPages: Observable<number> = this.numberOfPages$.asObservable();
-
-  startPartBooksItems = 0;
-  endPartBooksItems = 25;
-  numberofAllBooks = 8;
-
-  searchTitle: string = '';
-  searchAuthor: string = '';
-  filteredBySearch: ApiBookModel[] = [];
 
   constructor(
     private readonly apiBooksService: ApiBooksService,
@@ -51,40 +48,14 @@ export class MainDashboardService {
       });
   }
 
-  mapDataBookResponse(bookItem: ApiBookModel): ApiBookModel {
-    return {
-      author: bookItem?.author,
-      cover: bookItem?.cover,
-      cover_color: bookItem?.cover,
-      cover_thumb: bookItem?.cover_thumb,
-      epoch: bookItem?.epoch,
-      full_sort_key: bookItem?.full_sort_key,
-      genre: this.mapBookItemGenre(bookItem?.genre),
-      has_audio: bookItem?.has_audio,
-      href: bookItem?.href,
-      kind: bookItem?.kind,
-      liked: bookItem?.liked,
-      simple_thumb: bookItem?.simple_thumb,
-      slug: bookItem?.slug,
-      title: this.mapBookItemTitle(bookItem?.title),
-      url: bookItem?.url
-    };
+  public changedPage(currentPage: number) {
+    currentPage = currentPage - 1;
+    this.startPartBooksItems = currentPage * 25;
+    this.endPartBooksItems = this.startPartBooksItems + 25;
+    this.getBooks();
   }
 
-  mapBookItemTitle(bookTitle: string): string {
-    if (bookTitle?.length > 25) {
-      return bookTitle.slice(0, 22) + '...';
-    } else return bookTitle;
-  }
-  mapBookItemGenre(bookGenre: string) {
-    if (bookGenre?.includes(',')) {
-      return bookGenre.split(',')[0] + ', ' + bookGenre.split(',')[1];
-    } else if (bookGenre === '') {
-      return 'Brak danych';
-    } else return bookGenre;
-  }
-
-  searchBooks(search: string, type: SearchType) {
+  public searchBooks(search: string, type: SearchType) {
     search = search.charAt(0).toUpperCase() + search.slice(1);
     this.searchTitle = type === SearchType.SEARCH_TITLE ? (this.searchTitle = search) : this.searchTitle;
     this.searchAuthor = type === SearchType.SEARCH_AUTHOR ? (this.searchAuthor = search) : this.searchAuthor;
@@ -117,23 +88,51 @@ export class MainDashboardService {
     }
   }
 
-  handleFilterEmitter(): void {
+  private handleFilterEmitter(): void {
     const mappedFilteredBySearch: ApiBookModel[] = [];
     this.filteredBySearch.forEach((item: ApiBookModel) => mappedFilteredBySearch.push(this.mapDataBookResponse(item)));
     this.booksPerPage$.next(mappedFilteredBySearch);
   }
 
-  changedPage(currentPage: number) {
-    currentPage = currentPage - 1;
-    this.startPartBooksItems = currentPage * 25;
-    this.endPartBooksItems = this.startPartBooksItems + 25;
+ 
 
-    this.getBooks();
-  }
-
-  handleGeneratePageNumber(dataLength: number) {
+  private handleGeneratePageNumber(dataLength: number) {
     let numberOfPages: number = 0;
     numberOfPages = Math.ceil(dataLength / 25);
     this.numberOfPages$.next(numberOfPages);
+  }
+
+  private mapDataBookResponse(bookItem: ApiBookModel): ApiBookModel {
+    return {
+      author: bookItem?.author,
+      cover: bookItem?.cover,
+      cover_color: bookItem?.cover,
+      cover_thumb: bookItem?.cover_thumb,
+      epoch: bookItem?.epoch,
+      full_sort_key: bookItem?.full_sort_key,
+      genre: this.mapBookItemGenre(bookItem?.genre),
+      has_audio: bookItem?.has_audio,
+      href: bookItem?.href,
+      kind: bookItem?.kind,
+      liked: bookItem?.liked,
+      simple_thumb: bookItem?.simple_thumb,
+      slug: bookItem?.slug,
+      title: this.mapBookItemTitle(bookItem?.title),
+      url: bookItem?.url
+    };
+  }
+
+  private mapBookItemTitle(bookTitle: string): string {
+    if (bookTitle?.length > 25) {
+      return bookTitle.slice(0, 22) + '...';
+    } else return bookTitle;
+  }
+
+  private mapBookItemGenre(bookGenre: string) {
+    if (bookGenre?.includes(',')) {
+      return bookGenre.split(',')[0] + ', ' + bookGenre.split(',')[1];
+    } else if (bookGenre === '') {
+      return 'Brak danych';
+    } else return bookGenre;
   }
 }
