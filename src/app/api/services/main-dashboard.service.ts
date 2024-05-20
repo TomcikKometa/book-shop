@@ -10,12 +10,14 @@ export enum SearchType {
 }
 @Injectable({
   providedIn: 'root'
+  providedIn: 'root'
 })
 export class MainDashboardService {
   protected allBooks: ApiBookModel[] = [];
   private booksPerPage$: BehaviorSubject<ApiBookModel[]> = new BehaviorSubject<ApiBookModel[]>([]);
   public booksPerPage: Observable<ApiBookModel[]> = this.booksPerPage$.asObservable();
   private numberOfPages$: Subject<number> = new Subject<number>();
+  public booksPerPage: Observable<ApiBookModel[]> = this.booksPerPage$.asObservable();
   public numberOfPages: Observable<number> = this.numberOfPages$.asObservable();
   private filtered$: Subject<boolean> = new Subject<boolean>();
   public filtered: Observable<boolean> = this.filtered$.asObservable();
@@ -44,7 +46,61 @@ export class MainDashboardService {
       });
   }
 
-  mapDataBookResponse(bookItem: ApiBookModel): ApiBookModel {
+  public changedPage(currentPage: number) {
+    currentPage = currentPage - 1;
+    this.startPartBooksItems = currentPage * 25;
+    this.endPartBooksItems = this.startPartBooksItems + 25;
+    this.getBooks();
+  }
+
+  public searchBooks(search: string, type: SearchType) {
+    search = search.charAt(0).toUpperCase() + search.slice(1);
+    this.searchTitle = type === SearchType.SEARCH_TITLE ? (this.searchTitle = search) : this.searchTitle;
+    this.searchAuthor = type === SearchType.SEARCH_AUTHOR ? (this.searchAuthor = search) : this.searchAuthor;
+
+    if (this.searchAuthor.length > 1 && !this.searchTitle) {
+      this.filteredBySearch = this.allBooks.filter((value: ApiBookModel) => {
+        return value.author.includes(this.searchAuthor);
+      });
+      this.handleFilterEmitter();
+    } else if (this.searchTitle.length > 1 && !this.searchAuthor) {
+      this.filteredBySearch = this.allBooks.filter((value: ApiBookModel) => {
+        return value.title.includes(this.searchTitle);
+      });
+      this.handleFilterEmitter();
+    } else if (this.searchAuthor.length > 1 && this.searchTitle.length > 1) {
+      if (this.searchAuthor.length > 1) {
+        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
+          return value.author.includes(search);
+        });
+      } else if (this.searchTitle.length > 1) {
+        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
+          return value.title.includes(search);
+        });
+      }
+      this.handleFilterEmitter();
+    } else {
+      this.startPartBooksItems = 0;
+      this.endPartBooksItems = 25;
+      this.getBooks();
+    }
+  }
+
+  private handleFilterEmitter(): void {
+    const mappedFilteredBySearch: ApiBookModel[] = [];
+    this.filteredBySearch.forEach((item: ApiBookModel) => mappedFilteredBySearch.push(this.mapDataBookResponse(item)));
+    this.booksPerPage$.next(mappedFilteredBySearch);
+  }
+
+ 
+
+  private handleGeneratePageNumber(dataLength: number) {
+    let numberOfPages: number = 0;
+    numberOfPages = Math.ceil(dataLength / 25);
+    this.numberOfPages$.next(numberOfPages);
+  }
+
+  private mapDataBookResponse(bookItem: ApiBookModel): ApiBookModel {
     return {
       author: bookItem?.author,
       cover: bookItem?.cover,
@@ -61,15 +117,17 @@ export class MainDashboardService {
       slug: bookItem?.slug,
       title: this.mapBookItemTitle(bookItem?.title),
       url: bookItem?.url
+      url: bookItem?.url
     };
   }
 
-  mapBookItemTitle(bookTitle: string): string {
+  private mapBookItemTitle(bookTitle: string): string {
     if (bookTitle?.length > 25) {
       return bookTitle.slice(0, 22) + '...';
     } else return bookTitle;
   }
-  mapBookItemGenre(bookGenre: string) {
+
+  private mapBookItemGenre(bookGenre: string) {
     if (bookGenre?.includes(',')) {
       return bookGenre.split(',')[0] + ', ' + bookGenre.split(',')[1];
     } else if (bookGenre === '') {
