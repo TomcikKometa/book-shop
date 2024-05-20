@@ -10,7 +10,10 @@ export enum SearchType {
 }
 @Injectable({
   providedIn: 'root'
+<<<<<<< HEAD
   providedIn: 'root'
+=======
+>>>>>>> 7ac1c33 (delete mock data,change filter function)
 })
 export class MainDashboardService {
   protected allBooks: ApiBookModel[] = [];
@@ -117,7 +120,10 @@ export class MainDashboardService {
       slug: bookItem?.slug,
       title: this.mapBookItemTitle(bookItem?.title),
       url: bookItem?.url
+<<<<<<< HEAD
       url: bookItem?.url
+=======
+>>>>>>> 7ac1c33 (delete mock data,change filter function)
     };
   }
 
