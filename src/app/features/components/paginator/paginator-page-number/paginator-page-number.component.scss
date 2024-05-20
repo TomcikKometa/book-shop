@@ -5,23 +5,28 @@
   color: var(--unnamed-color-222222);
   text-align: center;
   cursor: pointer;
-  margin-right: 4px;
-  margin-left: 4px;
-  float: left;
-  
-  .beforeTen{
+  padding: 5px 12px;
+  align-items: center;
+
+  .beforeTen {
     width: 12px;
+    text-align: center;
   }
-  .afterTen{
+  .afterTen {
     width: 19px;
   }
 }
 
 .isActive {
-    background-color: brown;
+    background-color: #ADFA25;
     color: var(--unnamed-color-ffffff);
-    border-radius: 100%;
+    border-radius: 8px;
 }
 
-
-
+.page-number :hover:not(.isActive) {
+  @extend .afterTen;
+  @extend .beforeTen;
+  background-color:#ADFA25;
+  border-radius: 5px;
+  font-size: 2rem;
+}
