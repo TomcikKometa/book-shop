@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, DoCheck, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'planet-paginator-page-number',
@@ -8,8 +8,11 @@ import { Component, Input } from '@angular/core';
   templateUrl: './paginator-page-number.component.html',
   styleUrls: ['./paginator-page-number.component.scss']
 })
-export class PaginatorPageNumberComponent {
+export class PaginatorPageNumberComponent  {
   @Input() public pageNumber: number = 1;
   @Input() public isActive: boolean = false;
-  @Input() public index: number = 0;
+  @Input() public currentPage: number = 1;
+
+ 
 }
+

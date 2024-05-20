@@ -1,12 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  inject,
-} from '@angular/core';
+import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { PaginatorPageNumberComponent } from './paginator-page-number/paginator-page-number.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,14 +20,9 @@ interface PaginatorSelectOptions {
 @Component({
   selector: 'planet-paginator',
   standalone: true,
-  imports: [
-    PaginatorPageNumberComponent,
-    MatFormFieldModule,
-    CommonModule,
-    MatIconModule,
-  ],
+  imports: [PaginatorPageNumberComponent, MatFormFieldModule, CommonModule, MatIconModule],
   templateUrl: './paginator.component.html',
-  styleUrls: ['./paginator.component.scss'],
+  styleUrls: ['./paginator.component.scss']
 })
 export class PaginatorComponent implements OnInit {
   public selectedNumberOfItems: number = 10;
@@ -43,9 +30,9 @@ export class PaginatorComponent implements OnInit {
   increasedPage = 10;
   decreasedPage = 1;
   start = 0;
-  protected pagesToHandle: number = 0;
-  public numberOfPages$: Observable<number> =
-    inject(MainDashboardService).numberOfPages;
+  public numberOfPages$: Observable<number> = inject(MainDashboardService).numberOfPages;
+  public filtered$: Observable<boolean> = inject(MainDashboardService).filtered;
+  public filtered: boolean = false;
   public numberOfPages: number = 0;
   @Input() public currentPage: number = 1;
   public changedPage$: Subject<number> = new Subject<number>();
@@ -53,74 +40,118 @@ export class PaginatorComponent implements OnInit {
   public readonly paginatorSelectOptions: PaginatorSelectOptions[] = [
     { label: '10', value: 10 },
     { label: '15', value: 15 },
-    { label: '20', value: 20 },
+    { label: '20', value: 20 }
   ];
 
   public paginationObject = {
     previousValue: 0,
-    currentValue: 1
+    currentValue: 1,
+    nextValue: 0
   };
 
   private readonly distroyReference: DestroyRef = inject(DestroyRef);
-  private readonly mainDashboardService: MainDashboardService =
-    inject(MainDashboardService);
+  private readonly mainDashboardService: MainDashboardService = inject(MainDashboardService);
 
   public ngOnInit(): void {
-    this.numberOfPages$
-      .pipe(takeUntilDestroyed(this.distroyReference))
-      .subscribe((value: number) => {
-        this.pagesToHandle = value;
-        this.pages = Array(10)
-      .fill(10)
-      .map((x: unknown, i: number) => i + 1);
-        this.preparePagesToLoad();
-      });
+    this.numberOfPages$.pipe(takeUntilDestroyed(this.distroyReference)).subscribe((value: number) => {
+      this.numberOfPages = value;
+      this.preparePagesToLoad(this.numberOfPages)
+    });
+    
   }
 
-  public changePage(page: number): void {
-    this.paginationObject.previousValue = this.currentPage
+  protected changePage(page: number): void {
+    this.paginationObject.previousValue = this.currentPage;
     this.paginationObject.currentValue = page;
     this.currentPage = page;
-    this.handlePaginationChange();
-
+    this.mainDashboardService.changedPage(page);
   }
 
-  public moveBackwardPage(): void {
-    if (this.currentPage > 1) {
+  protected moveBackwardPage(): void {
+    if (this.currentPage >= 2) {
+      this.paginationObject.previousValue = this.currentPage;
       this.currentPage = this.currentPage - 1;
-      this.handlePaginationChange();
+      this.paginationObject.currentValue = this.currentPage;
+      this.mainDashboardService.changedBackwardPage(this.currentPage);
     }
   }
 
-  public moveForwardPage(): void {
+  protected moveForwardPage(): void {
     if (this.numberOfPages > this.currentPage) {
+      this.paginationObject.previousValue = this.currentPage;
       this.currentPage = this.currentPage + 1;
-      this.handlePaginationChange();
+      this.paginationObject.currentValue = this.currentPage;
+      this.mainDashboardService.changedFarwardPage(this.currentPage);
     }
   }
 
-  public handlePaginationChange(): void {
-    this.mainDashboardService.changedPage(this.currentPage);
-  }
+  private preparePagesToLoad(numberOfPages: number) {
+    console.log('ile razy');
+    console.log(this.filtered);
+    
 
-  preparePagesToLoad() {
-
-      if(this.paginationObject.previousValue < this.paginationObject.currentValue){
-        let start = this.increasedPage++;
-        let removeInxdex = this.increasedPage - 11;
-        this.pages = Array(start).fill(0).map((x: unknown, i: number) => i + 1);
-        this.pages.splice(0,removeInxdex);
-      }
-
-      if(this.paginationObject.previousValue > this.paginationObject.currentValue){
-        let start = this.increasedPage--;
-        this.pages = Array(this.increasedPage).fill({},2).map((x: unknown, i: number) => i - 1);
-        if(this.pages.length >= 12 && this.pages.indexOf(0) != 1){
+    if (this.paginationObject.previousValue < this.paginationObject.currentValue) {
+      if (this.filtered === true) {
+        console.log('hej');
+        
+        let start = 10;
+          if (start < 10) {
+            start = this.numberOfPages;
+          }
           const lengthDiffrence = this.pages.length - 10;
-          this.pages.splice(0,lengthDiffrence);
+          this.pages = Array(start)
+            .fill(0)
+            .map((x: unknown, i: number) => i + 1);
+          this.pages.splice(0, lengthDiffrence);
+          console.log(this.pages);
+          
+      } else {
+        if (numberOfPages < 10) {
+          this.pages = Array(numberOfPages)
+            .fill(0)
+            .map((x: unknown, i: number) => i + 1);
         } else {
-          this.pages = Array(10).fill(0).map((x: unknown, i: number) => i + 1);
+          let start = this.increasedPage++;
+          if (start < 10) {
+            start = this.numberOfPages;
+          }
+          let removeInxdex = this.increasedPage - 11;
+          this.pages = Array(start)
+            .fill(0)
+            .map((x: unknown, i: number) => i + 1);
+          this.pages.splice(0, removeInxdex);
         }
       }
+    }
+
+    if (this.paginationObject.previousValue > this.paginationObject.currentValue) {
+      
+      if (numberOfPages < 10) {
+        this.pages = Array(numberOfPages)
+          .fill(0)
+          .map((x: unknown, i: number) => i + 1);
+      }
+      if (numberOfPages > 10) {
+        let start = this.increasedPage--;
+
+        if (start <= 11) {
+          start = 10;
+        }
+
+        this.pages = Array(start)
+          .fill({}, 2)
+          .map((x: unknown, i: number) => i - 1);
+
+        if (start > 10 && this.pages.indexOf(0) != 1) {
+          const lengthDiffrence = this.pages.length - 10;
+          this.pages.splice(0, lengthDiffrence);
+        } else {
+          this.pages = Array(10)
+            .fill(0)
+            .map((x: unknown, i: number) => i + 1);
+        }
+      }
+    }
+    console.log(this.pages);
   }
 }

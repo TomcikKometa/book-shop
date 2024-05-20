@@ -1,8 +1,8 @@
 <div class="page-number" [ngClass]="{ isActive: isActive }">
   @if (pageNumber < 10) {
-    <div class="page-number beforeTen">{{ pageNumber }}</div>
+    <span class="page-number beforeTen d-flex justify-content-center">{{ pageNumber }}</span>
   }
   @if (pageNumber > 9) {
-    <div class="page-number afterTen">{{ pageNumber }}</div>
+    <span class="page-number afterTen d-flex justify-content-center">{{ pageNumber }}</span>
   }
 </div>

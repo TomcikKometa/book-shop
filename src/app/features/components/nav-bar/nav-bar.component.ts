@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class NavBarComponent implements OnInit {
   protected searchControlTitle: FormControl = new FormControl<string>('');
   protected searchControlAuthor: FormControl = new FormControl<string>('');
+  protected searchControlEpoch: FormControl = new FormControl<string>('');
 
   private readonly mainDashboardService: MainDashboardService =
     inject(MainDashboardService);
@@ -29,6 +30,11 @@ export class NavBarComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.distroyReference),debounceTime(500),distinctUntilChanged())
       .subscribe((value: string) =>
         this.mainDashboardService.searchBooks(value,SearchType.SEARCH_AUTHOR),
+      );
+      this.searchControlEpoch.valueChanges
+      .pipe(takeUntilDestroyed(this.distroyReference),debounceTime(500),distinctUntilChanged())
+      .subscribe((value: string) =>
+        this.mainDashboardService.searchBooks(value,SearchType.SEARCH_EPOCH),
       );
   }
 }
