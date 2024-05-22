@@ -1,4 +1,69 @@
 <div class="container">
+  @if ((isSpinner | async)) {
+    <div class="row pt-5">
+      <div class="col">
+        <div class="col-sm-3 d-flex justify-content-end">
+          <div
+            class="spinner-grow text-light"
+            style="width: 7rem; height: 7rem; background-color: #c09c1f"
+            role="status"
+          ></div>
+        </div>
+
+        <div class="row d-flex justify-content-end pt5 pb-5">
+          <div class="col-sm-2 x">
+            <div
+              class="spinner-grow text-light"
+              style="width: 5rem; height: 5rem; background-color: #cbaf32"
+              role="status"
+            ></div>
+          </div>
+        </div>
+
+        <div class="row d-flex justify-content-center pt-5 pb-5">
+          <div class="col-sm-3">
+            <div
+              class="spinner-grow text-light"
+              style="width: 3rem; height: 3rem; background-color: #d7c022"
+              role="status"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="justify-content-center pt-5 pb-5">
+      <div class="row d-flex justify-content-center">
+        <div class="col-sm-5 x">
+          <div
+            class="spinner-grow text-light"
+            style="width: 3rem; height: 3rem; background-color: #d7c022"
+            role="status"
+          ></div>
+        </div>
+      </div>
+        <div class="row d-flex justify-content-end pt-5 pb-5">
+          <div class="col-sm-5 x">
+            <div
+              class="spinner-grow text-light"
+              style="width: 1rem; height: 1rem; background-color: #cbaf32"
+              role="status"
+            ></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-1">
+            <div
+              class="spinner-grow text-light"
+              style="width: 2rem; height: 2rem; background-color: #c09c1f"
+              role="status"
+            ></div>
+          </div>
+      </div>
+    </div>
+  }
+
+@if(!(isSpinner | async) && !(isData | async)) {
   <div class="d-flex flex-wrap justify-content-center" style="margin-top: 20px">
     @for (book of bookPerPage$ | async; track $index) {
           <div class="row m-1">
@@ -29,7 +94,7 @@
                 <mat-card-content class="mt-1 pt-1">
                   <p>Cena brutto:</p>
                 </mat-card-content>
-                <mat-card-actions class="justify-content-center">
+                <mat-card-actions class="justify-content-center" style="z-index: 0;">
                   <button mat-raised-button class="m-1" color="primary">
                     Koszyk
                   </button>
@@ -41,4 +106,6 @@
         </div>
     }
   </div>
+}
+  
 </div>

@@ -31,8 +31,8 @@ export class PaginatorComponent implements OnInit {
   decreasedPage = 1;
   start = 0;
   public numberOfPages$: Observable<number> = inject(MainDashboardService).numberOfPages;
-  public filtered$: Observable<boolean> = inject(MainDashboardService).filtered;
-  public filtered: boolean = false;
+  public filtered$: Observable<number> = inject(MainDashboardService).isFiltered;
+  public filtered: number = 0;
   public numberOfPages: number = 0;
   @Input() public currentPage: number = 1;
   public changedPage$: Subject<number> = new Subject<number>();
@@ -55,9 +55,16 @@ export class PaginatorComponent implements OnInit {
   public ngOnInit(): void {
     this.numberOfPages$.pipe(takeUntilDestroyed(this.distroyReference)).subscribe((value: number) => {
       this.numberOfPages = value;
-      this.preparePagesToLoad(this.numberOfPages)
+      this.preparePagesToLoad(this.numberOfPages);
     });
-    
+    this.filtered$.pipe(takeUntilDestroyed(this.distroyReference)).subscribe((value: number) => {
+      this.filtered = value;
+
+      if(this.filtered === (0 || 1)){
+        this.increasedPage = 10;
+        this.currentPage = 1
+      }
+    });
   }
 
   protected changePage(page: number): void {
@@ -86,41 +93,25 @@ export class PaginatorComponent implements OnInit {
   }
 
   private preparePagesToLoad(numberOfPages: number) {
-    console.log('ile razy');
-    console.log(this.filtered);
-    
-
     if (this.paginationObject.previousValue < this.paginationObject.currentValue) {
-      if (this.filtered === true) {
-        console.log('hej');
-        
-        let start = 10;
-          if (start < 10) {
-            start = this.numberOfPages;
-          }
-          const lengthDiffrence = this.pages.length - 10;
-          this.pages = Array(start)
-            .fill(0)
-            .map((x: unknown, i: number) => i + 1);
-          this.pages.splice(0, lengthDiffrence);
-          console.log(this.pages);
-          
+
+      if (numberOfPages < 10) {
+        this.pages = Array(numberOfPages)
+          .fill(0)
+          .map((x: unknown, i: number) => i + 1);
       } else {
-        if (numberOfPages < 10) {
-          this.pages = Array(numberOfPages)
-            .fill(0)
-            .map((x: unknown, i: number) => i + 1);
-        } else {
-          let start = this.increasedPage++;
-          if (start < 10) {
-            start = this.numberOfPages;
-          }
-          let removeInxdex = this.increasedPage - 11;
-          this.pages = Array(start)
-            .fill(0)
-            .map((x: unknown, i: number) => i + 1);
-          this.pages.splice(0, removeInxdex);
+
+        let start = this.increasedPage++;
+        if (start < 10) {
+          start = this.numberOfPages;
         }
+
+        let removeInxdex = this.increasedPage - 11;
+        this.pages = Array(start)
+          .fill(0)
+          .map((x: unknown, i: number) => i + 1);
+
+        this.pages.splice(0, removeInxdex);
       }
     }
 
@@ -152,6 +143,5 @@ export class PaginatorComponent implements OnInit {
         }
       }
     }
-    console.log(this.pages);
   }
 }
