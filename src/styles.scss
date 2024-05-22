@@ -4,13 +4,22 @@
 body,
 html {
   width: 100%;
-  height: 100%;
   margin: 0;
   padding: 0;
   font-family: Roboto, sans-serif;
   overflow-x: hidden;
 }
 
+.footer{
+  position: fixed;
+  bottom: 0;
+  background-image: url("/assets/images/blob-scene-haikei.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  width: 100%;
+  z-index: 1;
+}
 
 :root {
     /* Colors: */
@@ -25,5 +34,5 @@ html {
     --tableFour-color-edf1f7: #edf1f7;
     --tableTitle-color-7699bb: #7699bb;
   }
-html, body { height: 100%; }
+html, body { height: 100%}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
