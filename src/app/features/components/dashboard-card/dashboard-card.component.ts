@@ -18,6 +18,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './dashboard-card.component.html',
   styleUrl: './dashboard-card.component.scss',
 })
-export class DashboardCardComponent {
-  public bookPerPage$: Observable<ApiBookModel[]> = inject(MainDashboardService).booksPerPage; 
+export class DashboardCardComponent{
+  public bookPerPage$: Observable<ApiBookModel[]> = inject(MainDashboardService).booksPerPage;
+  public isSpinner: Observable<boolean> = inject(MainDashboardService).isSpinner;
+  public isData: Observable<boolean> = inject(MainDashboardService).isData;
 }
