@@ -1,24 +1,40 @@
 import { Injectable, DestroyRef } from '@angular/core';
-import { ApiBooksService } from './api-books.service';
+import { ApiBooksService } from './api-books/api-books.service';
 import { BehaviorSubject, Observable, Subject, first } from 'rxjs';
 import { ApiBookModel } from './models/api-response-model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { getLocaleFirstDayOfWeek } from '@angular/common';
+import { ApiTodoService } from './api-todo/api-todo.service';
 export enum SearchType {
   SEARCH_TITLE = 'title',
   SEARCH_AUTHOR = 'author',
   SEARCH_EPOCH = 'epoch'
+}
+export interface EmployeeDto {
+  id: number;
+  name: string;
+  sex: 'M' | 'F';
 }
 @Injectable({
   providedIn: 'root'
 })
 export class MainDashboardService {
   protected allBooks: ApiBookModel[] = [];
+
   private booksPerPage$: BehaviorSubject<ApiBookModel[]> = new BehaviorSubject<ApiBookModel[]>([]);
   public booksPerPage: Observable<ApiBookModel[]> = this.booksPerPage$.asObservable();
+
   private numberOfPages$: Subject<number> = new Subject<number>();
   public numberOfPages: Observable<number> = this.numberOfPages$.asObservable();
-  private filtered$: Subject<boolean> = new Subject<boolean>();
-  public filtered: Observable<boolean> = this.filtered$.asObservable();
+
+  private isSpinner$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public isSpinner: Observable<boolean> = this.isSpinner$.asObservable();
+
+  private isData$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isData: Observable<boolean> = this.isData$.asObservable();
+
+  private isFiltered$: Subject<number> = new Subject<number>();
+  public isFiltered: Observable<number> = this.isFiltered$.asObservable();
 
   startPartBooksItems = 0;
   endPartBooksItems = 25;
@@ -27,23 +43,34 @@ export class MainDashboardService {
   searchAuthor: string = '';
   searchEpoch: string = '';
   filteredBySearch: ApiBookModel[] = [];
-
   constructor(
     private readonly apiBooksService: ApiBooksService,
+
     private readonly distroyReference: DestroyRef
   ) {
     this.getBooks();
+    localStorage.clear();
+    this.isFiltered$.next(0);
   }
 
   public getBooks() {
+    
+    this.isSpinner$.next(true);
     this.apiBooksService
       .getAllBooks()
       .pipe(takeUntilDestroyed(this.distroyReference))
       .subscribe((data: ApiBookModel[]) => {
-        this.handleGenerateNumberOfCards(data);
+        
+        setTimeout(()=>{this.isSpinner$.next(false),this.handleGenerateNumberOfCards(data);this.isData$.next(false)},500)
+      });
+
+      this.apiBooksService
+      .getAllBooksForFilter()
+      .pipe(takeUntilDestroyed(this.distroyReference))
+      .subscribe((data: ApiBookModel[]) => {
+        this.allBooks = data;
       });
   }
-
 
   private mapDataBookResponse(bookItem: ApiBookModel): ApiBookModel {
     return {
@@ -81,77 +108,71 @@ export class MainDashboardService {
 
   searchBooks(search: string, type: SearchType) {
     search = search.charAt(0).toUpperCase() + search.slice(1);
-    const filter = 'filter';
     this.searchTitle = type === SearchType.SEARCH_TITLE ? (this.searchTitle = search) : this.searchTitle;
-    this.searchAuthor = type === SearchType.SEARCH_AUTHOR ? (this.searchAuthor = search) : this.searchAuthor;
+    this.searchAuthor = type === SearchType.SEARCH_AUTHOR ? (this.searchAuthor = search) : this.searchAuthor,localStorage.clear();
     this.searchEpoch = type === SearchType.SEARCH_EPOCH ? (this.searchEpoch = search) : this.searchEpoch;
 
-    if (this.searchAuthor.length > 1 && !this.searchTitle) {
+    if (localStorage.getItem('filterSearch')) {
+      let localFilterSearchData = localStorage.getItem('filterSearch');
+    }
+
+    if (this.searchAuthor.length > 1 && !this.searchTitle && !this.searchEpoch) {
+      
+      localStorage.clear();
       this.filteredBySearch = this.allBooks.filter((value: ApiBookModel) => {
         return value.author.includes(this.searchAuthor);
       });
-      this.handleGenerateNumberOfCards(this.filteredBySearch);
-    } else if (this.searchTitle.length > 1 && !this.searchAuthor) {
+      localStorage.setItem('filterSearch', JSON.stringify(this.filteredBySearch));
+      this.clearNumberOfCards();
+      this.getBooks();
+      this.isFiltered$.next(1)
+    } else if (this.searchTitle.length > 1 && !this.searchAuthor && !this.searchEpoch) {
+      
+      localStorage.clear();
       this.filteredBySearch = this.allBooks.filter((value: ApiBookModel) => {
         return value.title.includes(this.searchTitle);
       });
-      this.handleGenerateNumberOfCards(this.filteredBySearch, filter);
-    } else if (this.searchEpoch.length > 1 && !this.searchAuthor) {
+
+      localStorage.setItem('filterSearch', JSON.stringify(this.filteredBySearch));
+      this.clearNumberOfCards();
+      this.getBooks();
+
+    } else if (this.searchEpoch.length > 1 && !this.searchAuthor && !this.searchEpoch) {
       this.filteredBySearch = this.allBooks.filter((value: ApiBookModel) => {
         return value.epoch.includes(this.searchEpoch);
       });
-      this.handleGenerateNumberOfCards(this.filteredBySearch, filter);
-      this.filtered$.next(true);
-
+      localStorage.setItem('filterSearch', JSON.stringify(this.filteredBySearch));
     } else if (this.searchAuthor.length > 1 && this.searchTitle.length > 1 && this.searchEpoch.length > 1) {
-      
-      this.handleGenerateNumberOfCards(this.filteredBySearch, filter);
-    } else if (this.searchEpoch.length > 1 && !this.searchAuthor) {
-      this.filteredBySearch = this.allBooks.filter((value: ApiBookModel) => {
-        return value.epoch.includes(this.searchEpoch);
+      this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
+        return value.author.includes(search) && value.title.includes(search) && value.epoch.includes(search);
       });
-      this.handleGenerateNumberOfCards(this.filteredBySearch, filter);
-      this.filtered$.next(true);
 
-    } else if (this.searchAuthor.length > 1 && this.searchTitle.length > 1 && this.searchEpoch.length > 1) {
-      
-      if (this.searchAuthor.length > 1) {
-        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
-          return value.author.includes(search);
-        });
-        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
-          return value.author.includes(search);
-        });
-      } else if (this.searchTitle.length > 1) {
-        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
-          return value.title.includes(search);
-        });
-      } else if (this.searchEpoch.length > 1) {
-        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
-          return value.epoch.includes(search);
-        });
-        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
-          return value.title.includes(search);
-        });
-      } else if (this.searchEpoch.length > 1) {
-        this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
-          return value.epoch.includes(search);
-        });
-      }
-      
-      
-      this.handleGenerateNumberOfCards(this.filteredBySearch,filter);
-      
-      
-      this.handleGenerateNumberOfCards(this.filteredBySearch,filter);
-    } else {
+      localStorage.setItem('filterSearch', JSON.stringify(this.filteredBySearch));
+    } else if (this.searchAuthor.length > 1 && this.searchTitle.length > 1) {
+      this.filteredBySearch = this.filteredBySearch.filter((value: ApiBookModel) => {
+        return value.author.includes(this.searchAuthor) && value.title.includes(this.searchTitle);
+      });
+
+      localStorage.setItem('filterSearch', JSON.stringify(this.filteredBySearch));
       this.startPartBooksItems = 0;
       this.endPartBooksItems = 25;
-      this.endPartBooksItems = 25;
       this.getBooks();
+    } else {
+      // this.startPartBooksItems = 0;
+      // this.endPartBooksItems = 25;
+      // this.getBooks();
     }
-  }
+    if(this.searchAuthor.length < 1 && this.searchEpoch.length < 1 && this.searchTitle.length < 1){
+      localStorage.clear();
+      this.clearNumberOfCards();
+      this.getBooks();
+      this.isFiltered$.next(1);
+      this.filteredBySearch = [];
+    }
+    
 
+    
+  }
 
   changedFarwardPage(page: number) {
     let pageIndex = page - 1;
@@ -164,21 +185,11 @@ export class MainDashboardService {
   }
 
   changedPage(currentPage: number) {
-    if ((this.searchAuthor.length || this.searchTitle.length || this.searchEpoch.length) > 1) {
-      currentPage = currentPage - 1;
-      this.startPartBooksItems = currentPage * 25;
-      this.endPartBooksItems = this.startPartBooksItems + 25;
-      this.handleGenerateNumberOfCards(this.filteredBySearch);
-    } else {
-      
-      currentPage = currentPage - 1;
-      this.startPartBooksItems = currentPage * 25;
-      this.endPartBooksItems = this.startPartBooksItems + 25;
-      
-      this.getBooks();
-    }
+    currentPage = currentPage - 1;
+    this.startPartBooksItems = currentPage * 25;
+    this.endPartBooksItems = this.startPartBooksItems + 25;
+    this.getBooks();
   }
-
 
   changedBackwardPage(page: number) {
     let pageIndex = page - 2;
@@ -196,6 +207,11 @@ export class MainDashboardService {
     } else this.getBooks();
   }
 
+  private clearNumberOfCards(){
+    this.startPartBooksItems = 0;
+    this.endPartBooksItems = 25;
+  }
+
   handleGeneratePageNumber(dataLength: number) {
     let numberOfPages: number = 0;
     numberOfPages = Math.ceil(dataLength / 25);
@@ -204,16 +220,12 @@ export class MainDashboardService {
 
   private handleGenerateNumberOfCards(data: ApiBookModel[], type?: string): void {
     const responseBooksPerPage: ApiBookModel[] = [];
-    if (type === 'filter') {
-      this.startPartBooksItems = 0;
-      this.endPartBooksItems = 25;
-    }
 
     if (data.length - this.endPartBooksItems < 0) {
       const diffrenceLength: number = Math.abs(data.length - this.endPartBooksItems);
       this.endPartBooksItems = this.endPartBooksItems - diffrenceLength;
     }
-    
+
     for (this.startPartBooksItems; this.startPartBooksItems < this.endPartBooksItems; this.startPartBooksItems++) {
       responseBooksPerPage.push(this.mapDataBookResponse(data[this.startPartBooksItems]));
     }
