@@ -4,4 +4,8 @@ export class ApiBooksUrls {
   public static prepareGetAllBooks(): string {
     return `${ApiBooksUrls.API_PREFIX}/books`;
   }
+
+  public static prepareGetSingleBookInfo(): string {
+    return `${ApiBooksUrls.API_PREFIX}/books/`
+  }
 }
