@@ -98,7 +98,7 @@
                   <button mat-raised-button class="m-1" color="primary">
                     Koszyk
                   </button>
-                  <button mat-raised-button class="m-1" color="accent" (click)="bookInfoService.openMatDialog()">
+                  <button mat-raised-button class="m-1" color="accent" (click)="bookInfoService.openMatDialog(book.slug)">
                     Info
                   </button>
                 </mat-card-actions>
