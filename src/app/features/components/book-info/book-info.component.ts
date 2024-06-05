@@ -32,7 +32,6 @@ export class BookInfoComponent implements OnInit {
   private isImageLoading: boolean = true;
 
   public bookInfo$: Observable<ApiSingleBookInfoDto> = inject(BookInfoService).apiResponseSingleInfo;
-  public isLoading$: Observable<boolean> = inject(BookInfoService).isLoading;
   public dialogRef: MatDialogRef<BookInfoComponent> = inject(MatDialogRef);
   public changeDetectionRef:ChangeDetectorRef = inject(ChangeDetectorRef);
   private readonly distroyReference: DestroyRef = inject(DestroyRef);
