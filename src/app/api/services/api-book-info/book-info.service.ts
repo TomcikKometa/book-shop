@@ -5,10 +5,10 @@ import { HttpClient } from '@angular/common/http';
 import { ApiSingleBookInfo } from '../models/api-response-single-book-model';
 import { ApiBooksUrls } from '../../api-books-urls';
 import { Observable, Subject, first, map } from 'rxjs';
-import { ApiSingleBookInfoDto, Media } from '../models/api-response-single-bookDto-model';
+import { ApiSingleBookInfoDto, Epoch, Genre, Kind, Media } from '../models/api-response-single-bookDto-model';
 
 export enum MediaAudioType {
-  MP3 = "mp3"
+  MP3 = 'mp3'
 }
 
 @Injectable({
@@ -36,16 +36,18 @@ export class BookInfoService {
         first(),
         map((response: ApiSingleBookInfo) => this.mapApiSingleBookResponse(response))
       )
-      .subscribe((data: ApiSingleBookInfoDto) => {this.apiResponseSingleInfo$.next(data),console.log(data)});
+      .subscribe((data: ApiSingleBookInfoDto) => {
+        this.apiResponseSingleInfo$.next(data), console.log(data);
+      });
   }
 
   private mapApiSingleBookResponse(bookItem: ApiSingleBookInfo): ApiSingleBookInfoDto {
     return {
       authors: bookItem?.authors,
       cover: bookItem?.cover,
-      epochs: bookItem?.epochs,
-      genres: bookItem?.genres,
-      kinds: bookItem?.kinds,
+      epochs: this.mapEpochs(bookItem?.epochs),
+      genres: this.mapGenres(bookItem?.genres),
+      kinds: this.mapKinds(bookItem?.kinds),
       title: bookItem?.title,
       media: this.mapMmdiaAudioType(bookItem?.media),
       pdf: bookItem?.pdf,
@@ -55,13 +57,20 @@ export class BookInfoService {
   }
 
   private mapMmdiaAudioType(dataAudioType: Media[]): Media[] {
-    console.log(dataAudioType);
-    
     let dataAudioTypeDto: Media[] = [];
+    dataAudioTypeDto = dataAudioType.filter((x: Media) => x.type === 'mp3');
+    return dataAudioTypeDto;
+  }
 
-    dataAudioTypeDto = dataAudioType.filter((x:Media)=> x.type === 'mp3')
-    
-    
-    return dataAudioTypeDto
+  private mapEpochs(epoch: Epoch[]): string {
+    return epoch[0].name ? epoch[0].name : 'brak danych'
+  }
+
+  private mapKinds(kind: Kind[]): string {
+    return kind[0].name ? kind[0].name : 'brak danych'
+  }
+
+  private mapGenres(genre: Genre[]): string {
+    return genre[0].name ? genre[0].name : 'brak danych'
   }
 }

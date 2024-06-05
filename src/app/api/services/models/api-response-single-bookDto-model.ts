@@ -1,9 +1,9 @@
 export interface ApiSingleBookInfoDto {
   authors: Author[];
   cover: string;
-  epochs: Epoch[];
-  genres: Genre[];
-  kinds: Kind[];
+  epochs: string;
+  genres: string;
+  kinds: string;
   title: string;
   media: Media[];
   pdf:string,
