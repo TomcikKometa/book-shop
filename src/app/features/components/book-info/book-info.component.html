@@ -1,117 +1,100 @@
+@if (!isRendered) {
+  <div class="backgroundLottie pr-2">
+    <ng-lottie
+      class="lottie d-flex justify-content-start pr-2"
+      [options]="options"
+      width="475px"
+      height="480px"
+      (loopComplete)="complited($event)"
+    />
+  </div>
+}
 
-<div
-  class="container"
-  [ngStyle]="{
-    'background-image': 'url(' + (bookInfo$ | async)?.cover + ')',
-    'background-repeat': 'no-repat',
-    'background-size': 'cover'
-  }"
->
-  <div class="background d-flex justify-content-center">
-    <div class="transbox">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-6 column">
-            <div class="row">
-              <span>Epoka: {{ ((bookInfo$ | async)?.epochs)![0].name }}</span>
+@if (bookInfo$ | async; as bookInfo) {
+  <img
+    [src]="bookInfo.cover"
+    alt=""
+    (load)="load($event)"
+    [ngStyle]="{ display: isRendered ? 'block' : 'none' }"
+    style="overflow-y: hidden"
+  />
+
+  @if (isRendered) {
+
+    <div class="background d-flex justify-content-center">
+      <div class="transbox">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6 column">
+              <div class="row">
+                <span>Epoka: {{ bookInfo.epochs }}</span>
+              </div>
+              <div class="row">
+                <span>Gatunek: {{ bookInfo.genres }}</span>
+              </div>
+              <div class="row">
+                <span>Rodzaj: {{ bookInfo.kinds }}</span>
+              </div>
+              <select class="form-select" label="Default select example" [formControl]="searchControlTitle" name="sort">
+                <option selected value="Wybierz MP3">Wybierz MP3</option>
+                @for (item of bookInfo.media; track item; let index = $index) {
+                  <option value="{{item.url}}">MP3 #{{index+1}}</option>
+                }
+              </select>
+              @if (bookInfo.media!.length > 0) {
+                <div class="row">
+                  <span
+                    >MP3:
+                    <a
+                      href="{{ bookInfo.media![0].url }}"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      style="text-decoration: none"
+                      >Pobierz
+                    </a></span
+                  >
+                </div>
+              }
             </div>
-            <div class="row">
-              <span>Gatunek: {{ ((bookInfo$ | async)?.genres)![0].name }}</span>
-            </div>
-            <div class="row">
-              <span>Rodzaj: {{ ((bookInfo$ | async)?.kinds)![0].name }}</span>
-            </div>
-            <div class="row">
-             
-                <span
-                >MP3:
-                <a
-                  href="{{ (bookInfo$ | async)?.media }}"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  style="text-decoration: none"
-                >
-                </a></span>
-            
-              
-            </div>
-          </div>
-          <div class="col-6">
+            <div class="col-6">
               <div class="col d-flex align-items-baseline">
                 <span>PDF:</span>
-                @if(bookInfo$){
-                  <div><a 
-                    class="d-flkex align-self-baseline"
-                    href="{{ (bookInfo$ | async)?.pdf }}"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    style="text-decoration: none;justify-items: center;"
-                  >
-                    Pobierz
-                  </a></div>
-                  
+                @if (bookInfo$) {
+                  <div>
+                    <a
+                      class="d-flkex align-self-baseline"
+                      href="{{ bookInfo.pdf }}"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      style="text-decoration: none; justify-items: center"
+                    >
+                      Pobierz
+                    </a>
+                  </div>
                 }
 
-                @if(!(bookInfo$)){
+                @if (!bookInfo$) {
                   <span>brak</span>
                 }
-            </div>
-            <div class="row">
-              <span
-                >Format txt:
-                <a
-                  href="{{ (bookInfo$ | async)?.txt }}"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  style="text-decoration: none"
+              </div>
+              <div class="row">
+                <span
+                  >Format txt:
+                  <a href="{{ bookInfo.txt }}" target="_blank" rel="noreferrer noopener" style="text-decoration: none">
+                    Pobierz
+                  </a></span
                 >
-                  Pobierz
-                </a></span
-              >
-            </div>
-            <div class="row">
-              <span>&nbsp;</span>
-            </div>
-            <div class="row">
-              <span>Czas {{ (bookInfo$ | async)?.audio_length }} </span>
+              </div>
+              <div class="row">
+                <span>&nbsp;</span>
+              </div>
+              <div class="row">
+                <span>Czas całkowity:{{ bookInfo.audio_length }} </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <div class="d-flex flex-wrap justify-content-center" style="margin-top: 20px">
-          <div class="row m-1">
-              <mat-card
-                class="example-card justify-content-center m-1"
-                style="
-                  width: 15rem;
-                  height: 23rem;
-                  align-items: center;
-                  background-color: #FFFFE3;
-                  box-shadow: 5px 5px 5px #d1c7c6;
-                  margin: 10px;
-                "
-              >
-              <mat-card-title style="text-align: center; font-size: 15px;font-weight: 600;"></mat-card-title>
-                <mat-card-title style="text-align: center; font-size: 15px">
-               
-            </mat-card-title>
-                <mat-card-subtitle></mat-card-subtitle>
-                
-                <mat-card-content class="mt-1 pt-1">
-                  <p>Cena brutto:</p>
-                </mat-card-content>
-                <mat-card-actions class="justify-content-center" style="z-index: 0;">
-                  <button mat-raised-button class="m-1" color="primary">
-                    Koszyk
-                  </button>
-                  <button mat-raised-button class="m-1" color="accent">
-                    Info
-                  </button>
-                </mat-card-actions>
-              </mat-card>
-        </div>
-  </div> -->
-  </div>
-</div>
+  }
+}
