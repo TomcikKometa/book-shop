@@ -1,4 +1,3 @@
-
 <div class="container">
   @if ((isSpinner | async)) {
     <div class="row pt-5">
@@ -69,13 +68,13 @@
     @for (book of bookPerPage$ | async; track $index) {
           <div class="row m-1">
               <mat-card
-                class="tom example-card justify-content-center m-1"
+                class="example-card justify-content-center m-1"
                 style="
                   width: 15rem;
                   height: 23rem;
                   align-items: center;
-                  background-color: #ffffff;
-                  box-shadow: 0px 0px 4px 4px #e7ff5d;
+                  background-color: #FFFFE3;
+                  box-shadow: 5px 5px 5px #d1c7c6;
                   margin: 10px;
                 "
               >
@@ -99,8 +98,8 @@
                   <button mat-raised-button class="m-1" color="primary">
                     Koszyk
                   </button>
-                  <button mat-raised-button class="m-1" color="" (click)="bookInfoService.openMatDialog(book.slug)">
-                    &nbsp;&nbsp; Info &nbsp;&nbsp;
+                  <button mat-raised-button class="m-1" color="accent" (click)="bookInfoService.openMatDialog(book.slug)">
+                    Info
                   </button>
                 </mat-card-actions>
               </mat-card>
