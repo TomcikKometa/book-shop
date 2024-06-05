@@ -4,3 +4,23 @@
     margin-top: 100px;
     padding-bottom: 5rem;
 }
+
+.tom {
+    background-image: url("/assets/images/blob-scene-haikei.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.start {
+    height: 400px;
+    width: 400px;
+    background-color: rgb(69, 2, 156);
+    padding-top: 200px;
+}
+
+.stop {
+    background-color: rgb(201, 19, 19);
+    height: 400px;
+    width: 400px;
+}
