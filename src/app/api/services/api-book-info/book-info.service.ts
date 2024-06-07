@@ -24,8 +24,8 @@ export class BookInfoService {
   public openMatDialog(bookName: string): void {
     this.getSingleBookInfo(bookName);
     this.matDialog.open(BookInfoComponent, {
-      width: '28vw',
-      height: '35vw'
+      width: '39vw',
+      height: '28vw'
     });
   }
 
