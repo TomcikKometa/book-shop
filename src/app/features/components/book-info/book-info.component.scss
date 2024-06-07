@@ -1,61 +1,211 @@
-div.container {
-  width: 100%;
-  height: 100%;
-  margin-right: 0px;
-  margin-left: 0px;
-
-}
-
-div.background {
-  border: 5px 5px 5px 5px rgb(165, 105, 105);
-  margin-top: 40%;
-  position: absolute;
-  right: 0px;
-  left: 0px;
+.container {
+  background-image: url("/assets/images/low-poly-grid-haikei.svg");
+  background-repeat: repeat;
+  background-size: cover;
   overflow-x: hidden;
-  box-shadow: rgb(204, 255, 85) 0px 0px 10px 15px;
-  background-color: #F2CB07;
-}
-
-div.transbox {
-  z-index: 0;
-  height: 100%;
+  overflow-y: hidden;
   width: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  // background-image: url("/assets/images/layered-steps-haikei(1).png");
-  background-image: url("/assets/images/low-poly-grid-haikei.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  
+  height: 100%;
+
+  .lottie_component {
+    justify-content: center;
+    margin-top: 25%;
+  }
+}
+.img {
+  margin: 12px 10px 20px 5px;
+  box-shadow: 0px 0px 15px 15px #f2ea72;
+  z-index: 1;
 }
 
-div.transbox span {
+.book_info {
+  padding-top: 5px;
+  padding-left: 20px;
+  z-index: 1;
+}
+
+.title {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  padding-top: 10px;
+}
+
+.book_info span {
   margin-top: 5px;
   margin-bottom: 5px;
-  color: black;
-  font-size: 15px;
-  text-decoration: none;
-  color: rgb(80, 38, 38);
-  font-family: "Roboto", sans-serif;
+  margin-left: 5px;
   font-weight: 500;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
-.column {
-  padding-left: 25px;
+.box {
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  padding-top: 5px;
+  padding-left: 5px;
+  height: 96%;
 }
 
-.lottie {
-  margin-top: 40%;
-  margin-right: 5px;
+.book_info select {
+  font-weight: 500;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
-.backgroundLottie {
+.context {
+  width: 100%;
+  position: absolute;
+  top: 50vh;
+}
+
+.context h1 {
+  text-align: center;
+  color: #fff;
+  font-size: 50px;
+}
+
+.container {
   background-image: url("/assets/images/low-poly-grid-haikei.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  overflow-y: hidden;
+  width: 100%;
+  height: 100vh;
 }
 
+.circles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 
+.circles li {
+  position: absolute;
+  display: block;
+  list-style: none;
+  width: 20px;
+  height: 20px;
+  background: rgba(199, 253, 73, 0.651);
+  animation: animate 13s linear infinite;
+  bottom: -150px;
+  left: 52%;
+  border-radius: 50% 20% / 10% 40%;
+}
 
+.circles li:nth-child(1) {
+  left: 54%;
+  width: 15px;
+  height: 15px;
+  animation-delay: 200ms;
+  animation-duration: 15s;
+  border-radius: 50% 20% / 10% 40%;
+}
+
+.circles li:nth-child(2) {
+  left: 56%;
+  width: 45px;
+  height: 45px;
+  animation-delay: 200ms;
+  animation-duration: 22s;
+  border-radius: 50% 20% / 10% 40%;
+}
+
+.circles li:nth-child(3) {
+  left: 64%;
+  width: 25px;
+  height: 25px;
+  animation-delay: 1s;
+  animation-duration: 17s;
+  border-radius: 50% 20% / 10% 40%;
+}
+
+.circles li:nth-child(4) {
+  left: 66%;
+  width: 52px;
+  height: 52px;
+  animation-delay: 3s;
+  animation-duration: 20s;
+  border-radius: 50% 20% / 10% 40%;
+}
+
+.circles li:nth-child(5) {
+  left: 74%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 4s;
+  animation-duration: 12;
+  border-radius: 8px;
+}
+
+.circles li:nth-child(6) {
+  left: 79%;
+  width: 54px;
+  height: 54px;
+  animation-delay: 0s;
+  animation-duration: 34s;
+  border-radius: 8px;
+}
+
+.circles li:nth-child(7) {
+  left: 70%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 0s;
+  animation-duration: 15s;
+  border-radius: 8px;
+}
+
+.circles li:nth-child(8) {
+  left: 85%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 0s;
+  animation-duration: 20s;
+  border-radius: 8px;
+}
+
+.circles li:nth-child(9) {
+  left: 95%;
+  width: 25px;
+  height: 25px;
+  animation-delay: 1s;
+  animation-duration: 22s;
+  border-radius: 8px;
+}
+
+.circles li:nth-child(10) {
+  left: 89%;
+  width: 35px;
+  height: 35px;
+  animation-delay: 0s;
+  animation-duration: 30s;
+  border-radius: 8px;
+}
+
+@keyframes animate {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+    border-radius: 50% 20% / 10% 40%;
+  }
+
+  100% {
+    transform: translateY(-500px) rotate(1400deg);
+    opacity: 0;
+    border-radius: 50% 20% / 10% 40%;
+  }
+}
+
+.border_line {
+  border-top: 2px solid #f2ea72;
+  box-shadow: 1px 5px 5px 1px #f2ea72;
+  border-radius: 90%;
+}
+
+.stress_line {
+  padding: 5px 5px 2px 5px;
+  width: 75%;
+  justify-content: center;
+  text-align: center;
+}
