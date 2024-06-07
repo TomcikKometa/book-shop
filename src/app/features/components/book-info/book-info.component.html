@@ -18,24 +18,26 @@
       </div>
       <div class="col-6 book_info mt-2">
         <div class="box">
-        <div class="d-flex justify-content-center title mb-2"><span>Informacje o książce</span></div>
-        <!-- <div class="d-flex justify-content-center">
-          <div class="stress_line"><p class="border_line"></p></div>
-        </div> -->
-        @if (isRendered) {
-          
-            <div class="row">
-              <span>Epoka: {{ bookInfo.epochs }}</span>
-            </div>
-            <div class="row">
-              <span>Gatunek: {{ bookInfo.genres }}</span>
-            </div>
-            <div class="row">
-              <span>Rodzaj: {{ bookInfo.kinds }}</span>
-            </div>
-            <div class="row">
-              <div class="d-flex align-items-baseline">
-                <span>PDF: </span>
+          <div class="d-flex justify-content-center title mb-1"><span>Informacje o książce</span></div>
+          <div class="d-flex justify-content-center">
+            <div class="stress_line"><p class="border_line"></p></div>
+          </div>
+          @if (isRendered) {
+            <div class="grid">
+              <div class="row_one"><span>Epoka:</span></div>
+              <div class="row_one_data">
+                <span>{{ bookInfo.epochs }}</span>
+              </div>
+              <div class="row_two"><span>Gatunek:</span></div>
+              <div class="row_two_data">
+                <span>{{ bookInfo.genres }}</span>
+              </div>
+              <div class="row_three"><span>Rodzaj:</span></div>
+              <div class="row_three_data">
+                <span>{{ bookInfo.kinds }}</span>
+              </div>
+              <div class="row_four"><span>PDF:</span></div>
+              <div class="row_four_data">
                 @if (bookInfo.pdf) {
                   <div>
                     <span
@@ -52,44 +54,35 @@
                   </div>
                 }
               </div>
-              @if (!bookInfo$) {
-                <span>brak</span>
-              }
-            </div>
-            @if (bookInfo.txt) {
-              <div class="row">
-                <span
-                  >Format txt:
-                  <a
-                    href="{{ bookInfo.txt }}"
-                    class="d-flkex align-self-baseline"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    style="text-decoration: none"
-                  >
+              <div class="row_five"><span>Format txt:</span></div>
+              <div class="row_five_data">
+                <span>
+                  <a href="{{ bookInfo.txt }}" target="_blank" rel="noreferrer noopener" style="text-decoration: none">
                     Pobierz
                   </a></span
                 >
               </div>
-            }
-            <div class="row">
-              <span>Darmowy audio book:</span>
+              <div class="row_six">
+                <span>Darmowy audio book:</span>
+              </div>
+              <div class="row_seven">
+                <select class="form-select mt-1" [formControl]="searchControlTitle">
+                  <option selected value="Wybierz MP3">Wybierz MP3</option>
+                  @for (item of bookInfo.media; track item; let index = $index) {
+                    <option value="{{ item.url }}">MP3 #{{ index + 1 }}</option>
+                  }
+                </select>
+              </div>
+              
+              <div class="row_eight"><span>Całkowity czas:</span></div>
+              <div class="row_eight_data">
+                <span>{{ bookInfo.audio_length }}</span>
+              </div>
             </div>
-            <div class="col-8">
-              <select class="form-select mt-1" [formControl]="searchControlTitle">
-                <option selected value="Wybierz MP3">Wybierz MP3</option>
-                @for (item of bookInfo.media; track item; let index = $index) {
-                  <option value="{{ item.url }}">MP3 #{{ index + 1 }}</option>
-                }
-              </select>
-            </div>
-            <div class="row">
-              <span>Czas całkowity:{{ bookInfo.audio_length }} </span>
-            </div>
-        }
+          }
+        </div>
       </div>
-      </div>
-      </div>
+    </div>
   }
 </div>
 
