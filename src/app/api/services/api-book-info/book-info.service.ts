@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BookInfoComponent } from '../../../features/components/book-info/book-info.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { ApiSingleBookInfo } from '../models/api-response-single-book-model';
 import { ApiBooksUrls } from '../../api-books-urls';
 import { Observable, Subject, first, map } from 'rxjs';
@@ -24,12 +24,15 @@ export class BookInfoService {
   public openMatDialog(bookName: string): void {
     this.getSingleBookInfo(bookName);
     this.matDialog.open(BookInfoComponent, {
-      width: '39vw',
-      height: '28vw'
+      width: '43vw',
+      height: '28vw',
+      backdropClass:'view'
     });
   }
 
   public getSingleBookInfo(bookName: string): void {
+  
+
     this.httpClient
       .get<ApiSingleBookInfo>(ApiBooksUrls.prepareGetSingleBookInfo() + bookName)
       .pipe(
@@ -39,6 +42,7 @@ export class BookInfoService {
       .subscribe((data: ApiSingleBookInfoDto) => {
         this.apiResponseSingleInfo$.next(data), console.log(data);
       });
+      
   }
 
   private mapApiSingleBookResponse(bookItem: ApiSingleBookInfo): ApiSingleBookInfoDto {
