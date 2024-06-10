@@ -8,20 +8,34 @@ import { MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/materia
 import { ApiSingleBookInfoDto } from '../../../api/services/models/api-response-single-bookDto-model';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import lottie from 'lottie-web';
-import {MatFormField, MatSelectModule} from '@angular/material/select';
+import { MatFormField, MatSelectModule } from '@angular/material/select';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SearchType } from '../../../api/services/main-dashboard.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-book-info',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, CommonModule, MatDialogModule, LottieComponent,MatDialogModule,MatSelectModule,MatFormField,FormsModule,ReactiveFormsModule],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    CommonModule,
+    MatDialogModule,
+    LottieComponent,
+    MatDialogModule,
+    MatSelectModule,
+    MatFormField,
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule
+  ],
   templateUrl: './book-info.component.html',
   styleUrl: './book-info.component.scss'
 })
 export class BookInfoComponent implements OnInit {
   backgroundImage: string = '';
+  x = true;
   options: AnimationOptions = {
     path: '/assets/animations/loading.json',
     loop: true,
@@ -29,27 +43,27 @@ export class BookInfoComponent implements OnInit {
   };
   protected searchControlTitle: FormControl = new FormControl<string>('Wybierz MP3');
   protected isRendered: boolean = false;
-  private isImageLoading: boolean = true;
+  protected isImageLoading: boolean = true;
 
   public bookInfo$: Observable<ApiSingleBookInfoDto> = inject(BookInfoService).apiResponseSingleInfo;
   public dialogRef: MatDialogRef<BookInfoComponent> = inject(MatDialogRef);
-  public changeDetectionRef:ChangeDetectorRef = inject(ChangeDetectorRef);
+  public changeDetectionRef: ChangeDetectorRef = inject(ChangeDetectorRef);
   private readonly distroyReference: DestroyRef = inject(DestroyRef);
-selectedCompetence: any;
+  selectedCompetence: any;
 
   ngOnInit(): void {
     this.bookInfo$.pipe(first()).subscribe((value: ApiSingleBookInfoDto) => {
       this.backgroundImage = value.cover;
       console.log(value);
-      
     });
 
     this.searchControlTitle.valueChanges
-      .pipe(takeUntilDestroyed(this.distroyReference),debounceTime(500),distinctUntilChanged())
-      .subscribe((value: string) =>
-        {console.log(value),
-      value === 'Wybierz MP3'? '': window.location.href = value}
-      );
+      .pipe(takeUntilDestroyed(this.distroyReference), debounceTime(500), distinctUntilChanged())
+      .subscribe((value: string) => {
+        console.log(value),
+          value === 'Wybierz MP3' ? '' : (window.location.href = value),
+          console.log(window.location.href);
+      });
   }
   protected load(event: any) {
     this.isImageLoading = false;
@@ -62,8 +76,7 @@ selectedCompetence: any;
     }
   }
 
-  selected(x:any){
+  selected(x: any) {
     console.log(x);
-    
   }
 }
