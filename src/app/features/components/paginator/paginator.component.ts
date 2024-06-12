@@ -1,20 +1,15 @@
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { PaginatorPageNumberComponent } from './paginator-page-number/paginator-page-number.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MainDashboardService } from '../../../api/services/main-dashboard.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface PaginationOptions {
   currentPage?: number;
   numberOfItems?: number;
-}
-
-interface PaginatorSelectOptions {
-  label: string;
-  value: number;
 }
 
 @Component({
@@ -25,30 +20,19 @@ interface PaginatorSelectOptions {
   styleUrls: ['./paginator.component.scss']
 })
 export class PaginatorComponent implements OnInit {
-  public selectedNumberOfItems: number = 10;
-  public pages: any[] = [];
-  increasedPage = 10;
-  decreasedPage = 1;
-  start = 0;
-  public numberOfPages$: Observable<number> = inject(MainDashboardService).numberOfPages;
-  public filtered$: Observable<number> = inject(MainDashboardService).isFiltered;
-  public filtered: number = 0;
-  public numberOfPages: number = 0;
-  @Input() public currentPage: number = 1;
-  public changedPage$: Subject<number> = new Subject<number>();
-
-  public readonly paginatorSelectOptions: PaginatorSelectOptions[] = [
-    { label: '10', value: 10 },
-    { label: '15', value: 15 },
-    { label: '20', value: 20 }
-  ];
-
-  public paginationObject = {
+  protected pages: any[] = [];
+  protected increasedPage = 10;
+  protected numberOfPages: number = 0;
+  private filtered: number = 0;
+  private paginationObject = {
     previousValue: 0,
     currentValue: 1,
     nextValue: 0
   };
+  @Input() public currentPage: number = 1;
 
+  protected readonly numberOfPages$: Observable<number> = inject(MainDashboardService).numberOfPages;
+  protected readonly filtered$: Observable<number> = inject(MainDashboardService).isFiltered;
   private readonly distroyReference: DestroyRef = inject(DestroyRef);
   private readonly mainDashboardService: MainDashboardService = inject(MainDashboardService);
 
