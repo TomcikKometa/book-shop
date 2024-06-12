@@ -12,6 +12,9 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 
+export enum ControlAudioString {
+  CHOOSE_MP3 = 'Wybierz MP3'
+}
 @Component({
   selector: 'app-book-info',
   standalone: true,
@@ -37,7 +40,7 @@ export class BookInfoComponent implements OnInit {
     loop: true,
     autoplay: true
   };
-  protected searchControlTitle: FormControl = new FormControl<string>('Wybierz MP3');
+  protected controlAudio: FormControl = new FormControl<string>(ControlAudioString.CHOOSE_MP3);
   protected isRendered: boolean = false;
   protected isImageLoading: boolean = true;
 
@@ -47,10 +50,10 @@ export class BookInfoComponent implements OnInit {
   private readonly distroyReference: DestroyRef = inject(DestroyRef);
 
   public ngOnInit(): void {
-    this.searchControlTitle.valueChanges
+    this.controlAudio.valueChanges
       .pipe(takeUntilDestroyed(this.distroyReference), debounceTime(500), distinctUntilChanged())
       .subscribe((value: string) => {
-          value === 'Wybierz MP3' ? '' : (window.location.href = value)
+          value === ControlAudioString.CHOOSE_MP3 ? '' : (window.location.href = value)
       });
   }
   protected load() {
@@ -70,5 +73,9 @@ export class BookInfoComponent implements OnInit {
 
   protected closeMatDialog(){
     this.dialogRef.close();
+  }
+
+  protected get controlAudioString():string {
+    return ControlAudioString.CHOOSE_MP3
   }
 }

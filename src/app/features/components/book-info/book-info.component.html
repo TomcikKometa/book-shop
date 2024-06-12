@@ -68,8 +68,8 @@
                 <span>Darmowy audio book:</span>
               </div>
               <div class="row_seven">
-                <select class="form-select mt-1" [formControl]="searchControlTitle">
-                  <option class="option" selected value="Wybierz MP3">Wybierz MP3</option>
+                <select class="form-select mt-1" [formControl]="controlAudio">
+                  <option class="option" selected [value]="controlAudioString">Wybierz MP3</option>
                   @for (item of bookInfo.media; track item; let index = $index) {
                     <option class="option" value="{{ item.url }}">MP3 #{{ index + 1 }}</option>
                   }
