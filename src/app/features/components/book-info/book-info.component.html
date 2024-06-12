@@ -1,7 +1,7 @@
 <div class="container">
   @if (!isRendered) {
     <div class="d-flex align-content-center lottie_component">
-      <ng-lottie [options]="options" width="475px" height="480px" (loopComplete)="complited($event)" />
+      <ng-lottie [options]="options" width="475px" height="480px" (loopComplete)="complited()" />
     </div>
   }
 
@@ -12,7 +12,7 @@
           class="img"
           [src]="bookInfo.cover"
           alt=""
-          (load)="load($event)"
+          (load)="load()"
           [ngStyle]="{ display: isRendered ? 'block' : 'none' }"
         />
       </div>
