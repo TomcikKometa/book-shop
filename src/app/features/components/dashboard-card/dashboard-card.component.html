@@ -1,6 +1,5 @@
-
 <div class="container">
-  @if ((isSpinner | async)) {
+  @if (isSpinner | async) {
     <div class="row pt-5">
       <div class="col">
         <div class="col-sm-3 d-flex justify-content-end">
@@ -10,7 +9,6 @@
             role="status"
           ></div>
         </div>
-
         <div class="row d-flex justify-content-end pt5 pb-5">
           <div class="col-sm-2 x">
             <div
@@ -20,12 +18,11 @@
             ></div>
           </div>
         </div>
-
         <div class="row d-flex justify-content-center pt-5 pb-5">
           <div class="col-sm-3">
             <div
               class="spinner-grow text-light"
-              style="width: 3rem; height: 3rem; background-color: #2A2F6E"
+              style="width: 3rem; height: 3rem; background-color: #2a2f6e"
               role="status"
             ></div>
           </div>
@@ -42,87 +39,88 @@
           ></div>
         </div>
       </div>
-        <div class="row d-flex justify-content-end pt-5 pb-5">
-          <div class="col-sm-5 x">
-            <div
-              class="spinner-grow text-light"
-              style="width: 1rem; height: 1rem; background-color: #2A2F6E"
-              role="status"
-            ></div>
-          </div>
+      <div class="row d-flex justify-content-end pt-5 pb-5">
+        <div class="col-sm-5 x">
+          <div
+            class="spinner-grow text-light"
+            style="width: 1rem; height: 1rem; background-color: #2a2f6e"
+            role="status"
+          ></div>
         </div>
-
-        <div class="row">
-          <div class="col-sm-1">
-            <div
-              class="spinner-grow text-light"
-              style="width: 2rem; height: 2rem; background-color: #2A2F6E"
-              role="status"
-            ></div>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-1">
+          <div
+            class="spinner-grow text-light"
+            style="width: 2rem; height: 2rem; background-color: #2a2f6e"
+            role="status"
+          ></div>
+        </div>
       </div>
     </div>
   }
-
-@if(!(isSpinner | async) && !(isData | async)) {
-  <div class="d-flex flex-wrap justify-content-center" style="margin-top: 20px">
-    @for (book of bookPerPage$ | async; track $index) {
-          <div class="row m-1">
-              <mat-card
-                class="tom example-card justify-content-center m-1"
-                style="
-                  width: 15rem;
-                  height: 23rem;
-                  align-items: center;
-                  background-color: #ffffff;
-                  box-shadow: 0px 0px 4px 4px #e7ff5d;
-                  margin: 10px;
-                  font-family: Roboto, sans-serif;
-                "
-              >
-              <mat-card-title style="text-align: center; font-size: 15px;font-weight: 600;">{{
-                book.author
-              }}</mat-card-title>
-                <mat-card-title style="text-align: center; font-size: 15px">{{
-                  book.title
-                }}</mat-card-title>
-                <mat-card-subtitle>{{ book.genre }}</mat-card-subtitle>
-                <img
-                  mat-card-image
-                  src="{{ book.simple_thumb }}"
-                  style="width: 9rem; height: 12rem; align-items: center;border-radius: 3px;box-shadow: 3px 3px 3px 3px #0f0f0f;"
-                  alt="{{book.title}}"
-                />
-                <mat-card-content class="mt-1 pt-1">
-                  <p>Cena brutto:</p>
-                </mat-card-content>
-                <mat-card-actions class="justify-content-center" style="z-index: 0;">
-                  
-                    <div class="row">
-                      <div class="button">
-                        <div class="button-wrapper" (click)="bookInfoService.openMatDialog(book.slug)">
-                          <div class="text">Info</div>
-                          <span class="icon">
-                            <mat-icon class="d-flex align-items-center">info</mat-icon>
-                          </span>
-                        </div>
-                      </div>
-                      <div class="button">
-                        <div class="button-wrapper">
-                          <div class="text">Dodaj do koszyka</div>
-                          <div>
-                            <span class="icon">
-                              <mat-icon class="">shop</mat-icon>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </mat-card-actions>
-              </mat-card>
-        </div>
-    }
-  </div>
-}
   
+  @if (!(isSpinner | async) && !(isData | async)) {
+    <div class="d-flex flex-wrap justify-content-center" style="margin-top: 20px">
+      @for (book of bookPerPage$ | async; track $index) {
+        <div class="row m-1">
+          <mat-card
+            class="tom example-card justify-content-center m-1"
+            style="
+              width: 15rem;
+              height: 23rem;
+              align-items: center;
+              background-color: #ffffff;
+              box-shadow: 0px 0px 4px 4px #e7ff5d;
+              margin: 10px;
+              font-family: Roboto, sans-serif;
+            "
+          >
+            <mat-card-title style="text-align: center; font-size: 15px; font-weight: 600">{{
+              book.author
+            }}</mat-card-title>
+            <mat-card-title style="text-align: center; font-size: 15px">{{ book.title }}</mat-card-title>
+            <mat-card-subtitle>{{ book.genre }}</mat-card-subtitle>
+            <img
+              mat-card-image
+              src="{{ book.simple_thumb }}"
+              style="
+                width: 9rem;
+                height: 12rem;
+                align-items: center;
+                border-radius: 3px;
+                box-shadow: 3px 3px 3px 3px #0f0f0f;
+              "
+              alt="{{ book.title }}"
+            />
+            <mat-card-content class="mt-1 pt-1">
+              <p>Cena brutto:</p>
+            </mat-card-content>
+            <mat-card-actions class="justify-content-center" style="z-index: 0">
+              <div class="row">
+                <div class="button">
+                  <div class="button-wrapper" (click)="bookInfoService.openMatDialog(book.slug)">
+                    <div class="text">Info</div>
+                    <span class="icon">
+                      <mat-icon class="d-flex align-items-center">info</mat-icon>
+                    </span>
+                  </div>
+                </div>
+                <div class="button">
+                  <div class="button-wrapper">
+                    <div class="text">Dodaj do koszyka</div>
+                    <div>
+                      <span class="icon">
+                        <mat-icon class="">shop</mat-icon>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      }
+    </div>
+  }
 </div>
