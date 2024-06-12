@@ -25,8 +25,8 @@ export class DashboardCardComponent {
   protected isRendered: boolean = true;
   @ViewChild('#lottieComponent') lottiComponent? : LottieComponent;
 
-  protected bookPerPage$: Observable<ApiBookModel[]> = inject(MainDashboardService).booksPerPage;
-  protected isSpinner: Observable<boolean> = inject(MainDashboardService).isSpinner;
-  protected isData: Observable<boolean> = inject(MainDashboardService).isData;
+  protected readonly bookPerPage$: Observable<ApiBookModel[]> = inject(MainDashboardService).booksPerPage;
+  protected readonly isSpinner: Observable<boolean> = inject(MainDashboardService).isSpinner;
+  protected readonly isData: Observable<boolean> = inject(MainDashboardService).isData;
   protected readonly bookInfoService: BookInfoService = inject(BookInfoService);
 }
