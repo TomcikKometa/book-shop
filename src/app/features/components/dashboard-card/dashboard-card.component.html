@@ -77,6 +77,7 @@
                   background-color: #ffffff;
                   box-shadow: 0px 0px 4px 4px #e7ff5d;
                   margin: 10px;
+                  font-family: Roboto, sans-serif;
                 "
               >
               <mat-card-title style="text-align: center; font-size: 15px;font-weight: 600;">{{
@@ -96,12 +97,33 @@
                   <p>Cena brutto:</p>
                 </mat-card-content>
                 <mat-card-actions class="justify-content-center" style="z-index: 0;">
-                  <button mat-raised-button class="m-1" color="primary">
-                    Koszyk
-                  </button>
-                  <button mat-raised-button class="m-1" color="" (click)="bookInfoService.openMatDialog(book.slug)">
+                  
+                    <div class="row">
+                      <div class="button">
+                        <div class="button-wrapper" (click)="bookInfoService.openMatDialog(book.slug)">
+                          <div class="text">Info</div>
+                          <span class="icon">
+                            <mat-icon class="d-flex align-items-center">info</mat-icon>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="button">
+                        <div class="button-wrapper">
+                          <div class="text">Dodaj do koszyka</div>
+                          <div>
+                            <span class="icon">
+                              <mat-icon class="">shop</mat-icon>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <!-- <button mat-raised-button class="m-1" style="background-color:#FFFFBF" (click)="bookInfoService.openMatDialog(book.slug)">
                     &nbsp;&nbsp; Info &nbsp;&nbsp;
                   </button>
+                  <button mat-raised-button class="m-1" color="primary">
+                    Koszyk
+                  </button> -->
                 </mat-card-actions>
               </mat-card>
         </div>

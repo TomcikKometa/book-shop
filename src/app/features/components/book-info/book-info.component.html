@@ -84,23 +84,26 @@
           }
           <div class="row_button">
             <div class="row">
-              <div data-tooltip="Price:-$20" class="button">
-                <div class="button-wrapper">
-                  <div class="text">Close</div>
-                  <span class="icon">
-                    <mat-icon>close</mat-icon>
-                  </span>
+              <div data-tooltip="Price:-$2000" class="button">
+                <div class="button-wrapper" (click)="closeMatDialog()">
+                  <div class="text" style="font-family: Kameron, serif">Close</div>
+                  <div class="d-flex align-content-center align-items-center">
+                    <span>
+                      <div class="icon d-flex align-content-center align-items-center"><mat-icon>close</mat-icon></div>
+                    </span>
+                  </div>
                 </div>
               </div>
               <div data-tooltip="Price:-$20" class="button">
-                <div class="button-wrapper">
-                  <div class="text">Buy Now</div>
-                  <span class="icon">
-                    <mat-icon class="">shop</mat-icon>
-                  </span>
+                <div class="button-wrapper" (click)="addToBusket()">
+                  <div class="text" style="font-family: Kameron, serif">Dodaj do koszyka</div>
+                  <div>
+                    <span>
+                      <div class="icon d-flex align-content-center align-items-center"><mat-icon>shop</mat-icon></div>
+                    </span>
+                  </div>
                 </div>
-            </div>
-            
+              </div>
             </div>
           </div>
         </div>
@@ -108,35 +111,6 @@
     </div>
   }
 </div>
-
-<!-- <div class="area">
-  <ul class="circles">
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-  </ul>
-</div> -->
-
-<!-- <ul class="circles1" style="z-index: 1;">
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-</ul> -->
-
 @if (isRendered) {
   <div class="bg"></div>
   <ul class="circles1" style="z-index: 1">
@@ -153,4 +127,6 @@
   </ul>
   <div class="bg bg2"></div>
   <div class="bg bg3"></div>
+
+  <div class="drop"></div>
 }

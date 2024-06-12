@@ -10,10 +10,11 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BookInfoComponent } from '../book-info/book-info.component';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import lottie from 'lottie-web';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-dashboard-card',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, CommonModule, MatDialogModule, LottieComponent],
+  imports: [MatCardModule, MatButtonModule, CommonModule, MatDialogModule, LottieComponent,MatIconModule],
   templateUrl: './dashboard-card.component.html',
   styleUrl: './dashboard-card.component.scss'
 })
@@ -32,10 +33,5 @@ export class DashboardCardComponent {
   @ViewChild('#lottieComponent') lottiComponent? : LottieComponent;
 
   protected readonly bookInfoService: BookInfoService = inject(BookInfoService);
-
-  complited() {
-    this.isRendered = false;
-    this.changeDetectionRef.detectChanges();
-    console.log(this.isRendered);
-  }
+  
 }
