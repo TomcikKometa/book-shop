@@ -26,6 +26,8 @@ export class BookInfoService {
     this.matDialog.open(BookInfoComponent, {
       width: '43vw',
       height: '28vw',
+      exitAnimationDuration:300,
+      enterAnimationDuration:500,
     });
   }
 
