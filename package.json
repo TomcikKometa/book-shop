@@ -23,6 +23,9 @@
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
+    "generate-unique-id": "^2.0.3",
+    "lottie-web": "^5.12.2",
+    "ngx-lottie": "^11.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -33,6 +36,7 @@
     "@angular/compiler-cli": "^17.1.0",
     "@angular/localize": "^17.1.0",
     "@types/jasmine": "~5.1.0",
+    "@types/node": "^20.14.2",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
