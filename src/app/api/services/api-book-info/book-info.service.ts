@@ -6,6 +6,7 @@ import { ApiSingleBookInfo } from '../models/api-response-single-book-model';
 import { ApiBooksUrls } from '../../api-books-urls';
 import { Observable, Subject, first, map } from 'rxjs';
 import { ApiSingleBookInfoDto, Epoch, Genre, Kind, Media } from '../models/api-response-single-bookDto-model';
+import generateUniqueId from 'generate-unique-id';
 
 export enum MediaAudioType {
   MP3 = 'mp3'
@@ -15,19 +16,21 @@ export enum MediaAudioType {
   providedIn: 'root'
 })
 export class BookInfoService {
+  private bookPrice:string = '';
   private apiResponseSingleInfo$: Subject<ApiSingleBookInfoDto> = new Subject<ApiSingleBookInfoDto>();
   public apiResponseSingleInfo: Observable<ApiSingleBookInfoDto> = this.apiResponseSingleInfo$.asObservable();
 
   private readonly matDialog: MatDialog = inject(MatDialog);
   private readonly httpClient: HttpClient = inject(HttpClient);
 
-  public openMatDialog(bookName: string): void {
+  public openMatDialog(bookName: string,price:string): void {
+    this.bookPrice = price;
     this.getSingleBookInfo(bookName);
     this.matDialog.open(BookInfoComponent, {
       width: '43vw',
       height: '28vw',
-      exitAnimationDuration:300,
-      enterAnimationDuration:500,
+      exitAnimationDuration: 300,
+      enterAnimationDuration: 500
     });
   }
 
@@ -39,9 +42,14 @@ export class BookInfoService {
         map((response: ApiSingleBookInfo) => this.mapApiSingleBookResponse(response))
       )
       .subscribe((data: ApiSingleBookInfoDto) => {
-        this.apiResponseSingleInfo$.next(data), console.log(data);
+        this.apiResponseSingleInfo$.next(data);
       });
-      
+    // example 1
+    const id2 = generateUniqueId({
+      length: 2,
+      useLetters: false
+    });
+    console.log(id2);
   }
 
   private mapApiSingleBookResponse(bookItem: ApiSingleBookInfo): ApiSingleBookInfoDto {
@@ -55,7 +63,8 @@ export class BookInfoService {
       media: this.mapMmdiaAudioType(bookItem?.media),
       pdf: bookItem?.pdf,
       audio_length: bookItem?.audio_length,
-      txt: bookItem.txt
+      txt: bookItem.txt,
+      price:this.bookPrice
     };
   }
 
@@ -66,14 +75,14 @@ export class BookInfoService {
   }
 
   private mapEpochs(epoch: Epoch[]): string {
-    return epoch[0].name ? epoch[0].name : 'brak danych'
+    return epoch[0].name ? epoch[0].name : 'brak danych';
   }
 
   private mapKinds(kind: Kind[]): string {
-    return kind[0].name ? kind[0].name : 'brak danych'
+    return kind[0].name ? kind[0].name : 'brak danych';
   }
 
   private mapGenres(genre: Genre[]): string {
-    return genre[0].name ? genre[0].name : 'brak danych'
+    return genre[0].name ? genre[0].name : 'brak danych';
   }
 }
