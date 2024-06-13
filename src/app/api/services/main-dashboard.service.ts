@@ -3,6 +3,7 @@ import { ApiBooksService } from './api-books/api-books.service';
 import { BehaviorSubject, Observable, Subject, first } from 'rxjs';
 import { ApiBookModel } from './models/api-response-model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import generateUniqueId from 'generate-unique-id';
 export enum SearchType {
   SEARCH_TITLE = 'title',
   SEARCH_AUTHOR = 'author',
@@ -47,17 +48,18 @@ export class MainDashboardService {
   }
 
   public getBooks() {
-    
     this.isSpinner$.next(true);
     this.apiBooksService
       .getAllBooks()
       .pipe(takeUntilDestroyed(this.distroyReference))
       .subscribe((data: ApiBookModel[]) => {
-        
-        setTimeout(()=>{this.isSpinner$.next(false),this.handleGenerateNumberOfCards(data);this.isData$.next(false)},500)
+        setTimeout(() => {
+          this.isSpinner$.next(false), this.handleGenerateNumberOfCards(data);
+          this.isData$.next(false);
+        }, 500);
       });
 
-      this.apiBooksService
+    this.apiBooksService
       .getAllBooksForFilter()
       .pipe(takeUntilDestroyed(this.distroyReference))
       .subscribe((data: ApiBookModel[]) => {
@@ -68,7 +70,8 @@ export class MainDashboardService {
   public searchBooks(search: string, type: SearchType) {
     search = search.charAt(0).toUpperCase() + search.slice(1);
     this.searchTitle = type === SearchType.SEARCH_TITLE ? (this.searchTitle = search) : this.searchTitle;
-    this.searchAuthor = type === SearchType.SEARCH_AUTHOR ? (this.searchAuthor = search) : this.searchAuthor,localStorage.clear();
+    (this.searchAuthor = type === SearchType.SEARCH_AUTHOR ? (this.searchAuthor = search) : this.searchAuthor),
+      localStorage.clear();
     this.searchEpoch = type === SearchType.SEARCH_EPOCH ? (this.searchEpoch = search) : this.searchEpoch;
 
     if (this.searchAuthor.length > 1 && !this.searchTitle && !this.searchEpoch) {
@@ -79,9 +82,8 @@ export class MainDashboardService {
       localStorage.setItem('filterSearch', JSON.stringify(this.filteredBySearch));
       this.clearNumberOfCards();
       this.getBooks();
-      this.isFiltered$.next(1)
+      this.isFiltered$.next(1);
     } else if (this.searchTitle.length > 1 && !this.searchAuthor && !this.searchEpoch) {
-      
       localStorage.clear();
       this.filteredBySearch = this.allBooks.filter((value: ApiBookModel) => {
         return value.title.includes(this.searchTitle);
@@ -90,7 +92,6 @@ export class MainDashboardService {
       localStorage.setItem('filterSearch', JSON.stringify(this.filteredBySearch));
       this.clearNumberOfCards();
       this.getBooks();
-
     } else if (this.searchEpoch.length > 1 && !this.searchAuthor && !this.searchEpoch) {
       this.filteredBySearch = this.allBooks.filter((value: ApiBookModel) => {
         return value.epoch.includes(this.searchEpoch);
@@ -113,7 +114,7 @@ export class MainDashboardService {
       this.getBooks();
     }
 
-    if(this.searchAuthor.length < 1 && this.searchEpoch.length < 1 && this.searchTitle.length < 1){
+    if (this.searchAuthor.length < 1 && this.searchEpoch.length < 1 && this.searchTitle.length < 1) {
       localStorage.clear();
       this.clearNumberOfCards();
       this.getBooks();
@@ -193,7 +194,8 @@ export class MainDashboardService {
       simple_thumb: bookItem?.simple_thumb,
       slug: bookItem?.slug,
       title: this.mapBookItemStrings(bookItem?.title),
-      url: bookItem?.url
+      url: bookItem?.url,
+      price: this.mapPrice()
     };
   }
 
@@ -211,8 +213,17 @@ export class MainDashboardService {
     } else return bookGenre;
   }
 
-  private clearNumberOfCards(){
+  private clearNumberOfCards() {
     this.startPartBooksItems = 0;
     this.endPartBooksItems = 25;
+  }
+
+  private mapPrice(): string {
+    const price: string = generateUniqueId({
+      length: 2,
+      useLetters: false,
+      excludeSymbols:['0']
+    });
+    return price;
   }
 }

@@ -14,4 +14,5 @@ export interface ApiBookModel {
   slug: string;
   cover_thumb: string;
   liked: any;
+  price:string
 }

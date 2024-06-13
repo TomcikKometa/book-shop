@@ -9,6 +9,7 @@ export interface ApiSingleBookInfoDto {
   pdf:string,
   audio_length:string,
   txt:string
+  price:string
 }
 
 export interface Epoch {
