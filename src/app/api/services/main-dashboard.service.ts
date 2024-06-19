@@ -9,11 +9,7 @@ export enum SearchType {
   SEARCH_AUTHOR = 'author',
   SEARCH_EPOCH = 'epoch'
 }
-export interface EmployeeDto {
-  id: number;
-  name: string;
-  sex: 'M' | 'F';
-}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,8 +25,8 @@ export class MainDashboardService {
   public isData: Observable<boolean> = this.isData$.asObservable();
   private isFiltered$: Subject<number> = new Subject<number>();
   public isFiltered: Observable<number> = this.isFiltered$.asObservable();
-  private startPartBooksItems = 0;
-  private endPartBooksItems = 25;
+  public startPartBooksItems = 0;
+  public endPartBooksItems = 25;
 
   private searchTitle: string = '';
   private searchAuthor: string = '';
@@ -53,6 +49,7 @@ export class MainDashboardService {
       .getAllBooks()
       .pipe(takeUntilDestroyed(this.distroyReference))
       .subscribe((data: ApiBookModel[]) => {
+      console.log(data),
         setTimeout(() => {
           this.isSpinner$.next(false), this.handleGenerateNumberOfCards(data);
           this.isData$.next(false);
@@ -158,11 +155,12 @@ export class MainDashboardService {
 
   private handleGenerateNumberOfCards(data: ApiBookModel[], type?: string): void {
     const responseBooksPerPage: ApiBookModel[] = [];
-
     if (data.length - this.endPartBooksItems < 0) {
       const diffrenceLength: number = Math.abs(data.length - this.endPartBooksItems);
       this.endPartBooksItems = this.endPartBooksItems - diffrenceLength;
     }
+    console.log(this.startPartBooksItems);
+    console.log(this.endPartBooksItems);
 
     for (this.startPartBooksItems; this.startPartBooksItems < this.endPartBooksItems; this.startPartBooksItems++) {
       responseBooksPerPage.push(this.mapDataBookResponse(data[this.startPartBooksItems]));
@@ -222,7 +220,7 @@ export class MainDashboardService {
     const price: string = generateUniqueId({
       length: 2,
       useLetters: false,
-      excludeSymbols:['0']
+      excludeSymbols: ['0']
     });
     return price;
   }
