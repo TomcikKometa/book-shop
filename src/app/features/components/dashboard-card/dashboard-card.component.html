@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container" [ngClass]="{'container2': navbarService.isFiltred === true}">
   @if (isSpinner | async) {
-    <div class="row pt-5">
+    <div class="row">
       <div class="col">
         <div class="col-sm-3 d-flex justify-content-end">
           <div
@@ -61,7 +61,7 @@
   }
   
   @if (!(isSpinner | async) && !(isData | async)) {
-    <div class="d-flex flex-wrap justify-content-center" style="margin-top: 20px">
+    <div class="d-flex flex-wrap justify-content-center" style="margin-top: 20px;">
       @for (book of bookPerPage$ | async; track $index) {
         <div class="row m-1">
           <mat-card

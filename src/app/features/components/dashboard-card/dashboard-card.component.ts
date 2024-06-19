@@ -9,6 +9,7 @@ import { BookInfoService } from '../../../api/services/api-book-info/book-info.s
 import { MatDialogModule } from '@angular/material/dialog';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import { MatIconModule } from '@angular/material/icon';
+import { NavBarService } from '../../../api/services/nav-bar/nav-bar.service';
 @Component({
   selector: 'app-dashboard-card',
   standalone: true,
@@ -29,4 +30,5 @@ export class DashboardCardComponent {
   protected readonly isSpinner: Observable<boolean> = inject(MainDashboardService).isSpinner;
   protected readonly isData: Observable<boolean> = inject(MainDashboardService).isData;
   protected readonly bookInfoService: BookInfoService = inject(BookInfoService);
+  public readonly navbarService: NavBarService = inject(NavBarService);
 }
