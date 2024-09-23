@@ -67,10 +67,6 @@ export class BookInfoComponent implements OnInit {
     }
   }
 
-  protected addToBusket() {
-   window.alert('ssss');
-  }
-
   protected closeMatDialog(){
     this.dialogRef.close();
   }
