@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary col-12">
-  <div class="row">
+  <div class="setting_navbar">
     <div class="col-3" style="align-items: center; display: flex">
       <img
         src="../assets/images/menu-alt-2-svgrepo-com.svg"
@@ -16,10 +16,10 @@
         </text>
       </svg>
     </div>
-    <div class="col-4 d-flex justify-content-end" style="display: flex; align-items: center">
+    <div class="col-3 d-flex justify-content-end" style="display: flex; align-items: center">
       <img
         src="../assets/images/book-closed-svgrepo-com.svg"
-        width="70"
+        width="85"
         height="70"
         class=""
         alt=""
@@ -36,13 +36,6 @@
       <div class="group">
         <input placeholder="Search" type="search" class="input" [formControl]="searchControlAuthor" />
       </div>
-      <!-- <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Szukaj po tytule"
-          aria-label="Search"
-          [formControl]="searchControlTitle"
-        /> -->
       @if (!navbarService.isFiltred) {
         <div class="tooltip-container" (click)="navbarService.changeViewedNavBar()">
           <img
