@@ -28,7 +28,7 @@ export class NavBarComponent implements OnInit {
   public ngOnInit(): void {
     this.searchControlTitle.valueChanges
       .pipe(takeUntilDestroyed(this.distroyReference), debounceTime(500), distinctUntilChanged())
-      .subscribe((value: string) => this.mainDashboardService.searchBooks(value, SearchType.SEARCH_TITLE));
+      .subscribe((value: string) => {this.mainDashboardService.searchBooks(value, SearchType.SEARCH_TITLE),console.log(value)});
     this.searchControlAuthor.valueChanges
       .pipe(takeUntilDestroyed(this.distroyReference), debounceTime(500), distinctUntilChanged())
       .subscribe((value: string) => {this.mainDashboardService.searchBooks(value, SearchType.SEARCH_AUTHOR),console.log(value)});

@@ -34,7 +34,7 @@
     </div>
     <div class="col-5 d-flex justify-content-end" style="display: flex;align-items: center;">
       <div class="group">
-        <input placeholder="Search" type="search" class="input" [formControl]="searchControlAuthor" />
+        <input placeholder="Szukaj po autorze" type="search" class="input" [formControl]="searchControlAuthor" />
       </div>
       @if (!navbarService.isFiltred) {
         <div class="tooltip-container" (click)="navbarService.changeViewedNavBar()">
@@ -64,7 +64,7 @@
       }
 
       <div class="group">
-        <input placeholder="Search" type="search" class="input" style="border-radius: 20px 5px" />
+        <input placeholder="Szukaj po tytule" type="search" class="input" style="border-radius: 20px 5px" [formControl]="searchControlTitle"/>
       </div>
       <div
         style="
