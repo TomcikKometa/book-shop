@@ -79,118 +79,6 @@ div.title span {
   height: 100vh;
 }
 
-.circles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.circles li {
-  position: absolute;
-  display: block;
-  list-style: none;
-  width: 20px;
-  height: 20px;
-  background: rgba(199, 253, 73, 0.651);
-  animation: animate 13s linear infinite;
-  bottom: -150px;
-  left: 52%;
-  border-radius: 50% 20% / 10% 40%;
-}
-
-.circles li:nth-child(1) {
-  left: 54%;
-  width: 15px;
-  height: 15px;
-  animation-delay: 200ms;
-  animation-duration: 15s;
-  border-radius: 50% 20% / 10% 40%;
-}
-
-.circles li:nth-child(2) {
-  left: 56%;
-  width: 45px;
-  height: 45px;
-  animation-delay: 200ms;
-  animation-duration: 22s;
-  border-radius: 50% 20% / 10% 40%;
-}
-
-.circles li:nth-child(3) {
-  left: 64%;
-  width: 25px;
-  height: 25px;
-  animation-delay: 1s;
-  animation-duration: 17s;
-  border-radius: 50% 20% / 10% 40%;
-}
-
-.circles li:nth-child(4) {
-  left: 66%;
-  width: 52px;
-  height: 52px;
-  animation-delay: 3s;
-  animation-duration: 20s;
-  border-radius: 50% 20% / 10% 40%;
-}
-
-.circles li:nth-child(5) {
-  left: 74%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 4s;
-  animation-duration: 12;
-  border-radius: 8px;
-}
-
-.circles li:nth-child(6) {
-  left: 79%;
-  width: 54px;
-  height: 54px;
-  animation-delay: 0s;
-  animation-duration: 34s;
-  border-radius: 8px;
-}
-
-.circles li:nth-child(7) {
-  left: 70%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 0s;
-  animation-duration: 15s;
-  border-radius: 8px;
-}
-
-.circles li:nth-child(8) {
-  left: 85%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 0s;
-  animation-duration: 20s;
-  border-radius: 8px;
-}
-
-.circles li:nth-child(9) {
-  left: 95%;
-  width: 25px;
-  height: 25px;
-  animation-delay: 1s;
-  animation-duration: 22s;
-  border-radius: 8px;
-}
-
-.circles li:nth-child(10) {
-  left: 89%;
-  width: 35px;
-  height: 35px;
-  animation-delay: 0s;
-  animation-duration: 30s;
-  border-radius: 8px;
-}
-
 @keyframes animate {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -480,7 +368,7 @@ div.row_seven.select.form-select{
   }
 }
 
-.circles1 {
+.circles {
   position: fixed;
   left: 0;
   bottom: 80%;
@@ -490,7 +378,7 @@ div.row_seven.select.form-select{
   z-index: 1;
 }
 
-.circles1 li {
+.circles li {
   position: fixed;
   display: block;
   list-style: none;
@@ -504,7 +392,7 @@ div.row_seven.select.form-select{
   z-index: 1;
 }
 
-.circles1 li:nth-child(1) {
+.circles li:nth-child(1) {
   left: 39%;
   width: 15px;
   height: 15px;
@@ -513,7 +401,7 @@ div.row_seven.select.form-select{
   border-radius: 50% 20% / 10% 40%;
 }
 
-.circles1 li:nth-child(2) {
+.circles li:nth-child(2) {
   left: 33%;
   width: 45px;
   height: 45px;
@@ -522,7 +410,7 @@ div.row_seven.select.form-select{
   border-radius: 50% 20% / 10% 40%;
 }
 
-.circles1 li:nth-child(3) {
+.circles li:nth-child(3) {
   left: 45%;
   width: 25px;
   height: 25px;
@@ -531,7 +419,7 @@ div.row_seven.select.form-select{
   border-radius: 50% 20% / 10% 40%;
 }
 
-.circles1 li:nth-child(4) {
+.circles li:nth-child(4) {
   left: 41%;
   width: 52px;
   height: 52px;
@@ -540,7 +428,7 @@ div.row_seven.select.form-select{
   border-radius: 50% 20% / 10% 40%;
 }
 
-.circles1 li:nth-child(5) {
+.circles li:nth-child(5) {
   left: 30%;
   width: 20px;
   height: 20px;
@@ -549,7 +437,7 @@ div.row_seven.select.form-select{
   border-radius: 8px;
 }
 
-.circles1 li:nth-child(6) {
+.circles li:nth-child(6) {
   left: 44%;
   width: 54px;
   height: 54px;
@@ -558,7 +446,7 @@ div.row_seven.select.form-select{
   border-radius: 8px;
 }
 
-.circles1 li:nth-child(7) {
+.circles li:nth-child(7) {
   left: 34%;
   width: 20px;
   height: 20px;
@@ -567,7 +455,7 @@ div.row_seven.select.form-select{
   border-radius: 8px;
 }
 
-.circles1 li:nth-child(8) {
+.circles li:nth-child(8) {
   left:40%;
   width: 20px;
   height: 20px;
@@ -576,7 +464,7 @@ div.row_seven.select.form-select{
   border-radius: 8px;
 }
 
-.circles1 li:nth-child(9) {
+.circles li:nth-child(9) {
   left: 31%;
   width: 30px;
   height: 30px;
@@ -585,7 +473,7 @@ div.row_seven.select.form-select{
   border-radius: 8px;
 }
 
-.circles1 li:nth-child(10) {
+.circles li:nth-child(10) {
   left: 33%;
   width: 15px;
   height: 15px;
