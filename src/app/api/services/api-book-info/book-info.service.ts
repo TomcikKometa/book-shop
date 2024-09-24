@@ -49,7 +49,6 @@ export class BookInfoService {
       length: 2,
       useLetters: false
     });
-    console.log(id2);
   }
 
   private mapApiSingleBookResponse(bookItem: ApiSingleBookInfo): ApiSingleBookInfoDto {
