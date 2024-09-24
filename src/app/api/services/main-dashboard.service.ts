@@ -49,7 +49,6 @@ export class MainDashboardService {
       .getAllBooks()
       .pipe(takeUntilDestroyed(this.distroyReference))
       .subscribe((data: ApiBookModel[]) => {
-      console.log(data),
         setTimeout(() => {
           this.isSpinner$.next(false), this.handleGenerateNumberOfCards(data);
           this.isData$.next(false);
@@ -159,8 +158,6 @@ export class MainDashboardService {
       const diffrenceLength: number = Math.abs(data.length - this.endPartBooksItems);
       this.endPartBooksItems = this.endPartBooksItems - diffrenceLength;
     }
-    console.log(this.startPartBooksItems);
-    console.log(this.endPartBooksItems);
 
     for (this.startPartBooksItems; this.startPartBooksItems < this.endPartBooksItems; this.startPartBooksItems++) {
       responseBooksPerPage.push(this.mapDataBookResponse(data[this.startPartBooksItems]));

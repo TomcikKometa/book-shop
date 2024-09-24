@@ -40,7 +40,6 @@ export class PaginatorComponent implements OnInit {
     this.numberOfPages$.pipe(takeUntilDestroyed(this.distroyReference)).subscribe((value: number) => {
       this.numberOfPages = value;
       this.preparePagesToLoad(this.numberOfPages);
-      console.log(value)
     });
     this.filtered$.pipe(takeUntilDestroyed(this.distroyReference)).subscribe((value: number) => {
       this.filtered = value;
